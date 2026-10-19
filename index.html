@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="amoled" data-mode="amoled" data-palette="rose">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>baffling space — the home of my apps</title>
+<meta name="description" content="baffling space is a quiet home for a small collection of personal tools: a fitness tracker and a notes app, built independently.">
+<meta name="theme-color" content="#000000">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%230f1114'/%3E%3Crect x='5' y='5' width='9' height='9' rx='3' fill='none' stroke='%23c9ccd2' stroke-width='1.6'/%3E%3Crect x='10' y='10' width='9' height='9' rx='3' fill='%23c9ccd2' fill-opacity='.45' stroke='%23c9ccd2' stroke-width='1.6'/%3E%3C/svg%3E">
+<script>
+/* Apply saved appearance before first paint (no flash). Stores only theme + palette. */
+(function () {
+  var r = document.documentElement, t = "amoled", p = "rose";
+  try { t = localStorage.getItem("bs-theme") || t; p = localStorage.getItem("bs-palette") || p; } catch (e) {}
+  var mode = t === "system" ? (matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark") : t;
+  r.dataset.theme = t; r.dataset.mode = mode; r.dataset.palette = p;
+})();
+</script>
+<style>
+:root {
+  --font: "Avenir Next", "Segoe UI Variable Display", "Segoe UI", "SF Pro Display", system-ui, -apple-system, "Helvetica Neue", sans-serif;
+  --r-sm: 10px; --r-md: 16px; --r-lg: 26px; --r-pill: 999px;
+  --s1: .5rem; --s2: .75rem; --s3: 1rem; --s4: 1.5rem; --s5: 2.5rem; --s6: 4rem;
+  --ease: cubic-bezier(.22, .8, .24, 1); --t-fast: .16s; --t-med: .32s;
+  --ah: 220; --as: 8%;
+  --accent: hsl(var(--ah) var(--as) var(--al));
+  --accent-soft: hsl(var(--ah) var(--as) var(--al) / .14);
+}
+/* Palettes: hue + saturation of the accent and atmosphere */
+[data-palette="graphite"] { --ah: 220; --as: 8%; }
+[data-palette="arctic"]   { --ah: 195; --as: 72%; }
+[data-palette="lavender"] { --ah: 262; --as: 62%; }
+[data-palette="ocean"]    { --ah: 214; --as: 78%; }
+[data-palette="forest"]   { --ah: 150; --as: 46%; }
+[data-palette="ember"]    { --ah: 22;  --as: 82%; }
+[data-palette="rose"]     { --ah: 340; --as: 66%; }
+/* Modes */
+[data-mode="dark"] {
+  color-scheme: dark; --al: 72%; --bg: #0f1114; --text: #eceef1; --muted: #9ba0a9;
+  --glass: rgba(255,255,255,.045); --glass-2: rgba(255,255,255,.075); --panel: rgba(24,26,31,.82);
+  --line: rgba(255,255,255,.09); --hi: rgba(255,255,255,.14); --ta: .22; --on-accent: #0b0c0e;
+  --shadow: 0 24px 60px -28px rgba(0,0,0,.75);
+}
+[data-mode="amoled"] {
+  color-scheme: dark; --al: 72%; --bg: #000; --text: #eceef1; --muted: #9296a0;
+  --glass: rgba(255,255,255,.035); --glass-2: rgba(255,255,255,.06); --panel: rgba(12,12,14,.9);
+  --line: rgba(255,255,255,.08); --hi: rgba(255,255,255,.11); --ta: .14; --on-accent: #050506;
+  --shadow: 0 24px 60px -28px rgba(0,0,0,.9);
+}
+[data-mode="light"] {
+  color-scheme: light; --al: 36%; --bg: #f3f2ef; --text: #181a1f; --muted: #575d68;
+  --glass: rgba(255,255,255,.6); --glass-2: rgba(255,255,255,.82); --panel: rgba(255,255,255,.9);
+  --line: rgba(20,24,34,.11); --hi: rgba(255,255,255,.9); --ta: .2; --on-accent: #fff;
+  --shadow: 0 20px 44px -26px rgba(30,34,48,.35);
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-padding-top: 5rem; }
+body {
+  margin: 0; min-height: 100vh; font-family: var(--font); color: var(--text); background: var(--bg);
+  line-height: 1.55; overflow-x: hidden; transition: background-color var(--t-med), color var(--t-med);
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+/* Atmosphere: three soft colour fields, tinted by the palette */
+.atmo { position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(60vw 48vh at 12% -4%, hsl(var(--ah) var(--as) 52% / var(--ta)), transparent 70%),
+    radial-gradient(46vw 42vh at 96% 34%, hsl(calc(var(--ah) + 42) var(--as) 50% / calc(var(--ta) * .75)), transparent 70%),
+    radial-gradient(70vw 40vh at 40% 112%, hsl(calc(var(--ah) - 36) var(--as) 46% / calc(var(--ta) * .8)), transparent 70%);
+  transition: background var(--t-med); }
+.wrap { width: min(1120px, 100% - 2.5rem); margin-inline: auto; }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: var(--r-sm); }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* Navigation */
+.nav { position: sticky; top: 0; z-index: 20; padding-top: var(--s2); }
+.nav-in { display: flex; align-items: center; justify-content: space-between; gap: var(--s3);
+  padding: .5rem .6rem .5rem 1rem; border: 1px solid var(--line); border-radius: var(--r-pill);
+  background: var(--glass); backdrop-filter: blur(16px) saturate(1.3); -webkit-backdrop-filter: blur(16px) saturate(1.3); }
+.brand { display: inline-flex; align-items: center; gap: .6rem; text-decoration: none; font-size: 1.02rem; letter-spacing: -.01em; }
+.brand svg { width: 24px; height: 24px; flex: none; }
+.brand .slash { color: var(--muted); font-weight: 300; margin-inline: .1em; }
+.brand b { font-weight: 600; } .brand span.sp { font-weight: 300; }
+.ctrls { display: flex; gap: .35rem; position: relative; }
+.ibtn { display: inline-flex; align-items: center; gap: .45rem; height: 40px; min-width: 40px; justify-content: center; padding: 0 .7rem;
+  border: 1px solid transparent; border-radius: var(--r-pill); background: transparent; color: var(--text); font: inherit; font-size: .88rem; cursor: pointer;
+  transition: background var(--t-fast), border-color var(--t-fast), transform var(--t-fast); }
+.ibtn:hover { background: var(--glass-2); border-color: var(--line); }
+.ibtn:active { transform: scale(.96); }
+.ibtn svg { width: 18px; height: 18px; flex: none; }
+.ibtn[aria-expanded="true"] { background: var(--glass-2); border-color: var(--line); }
+.dot { width: 14px; height: 14px; border-radius: 50%; background: var(--accent); box-shadow: inset 0 0 0 1px var(--hi); }
+.menu { position: absolute; top: calc(100% + .55rem); right: 0; z-index: 30; min-width: 200px; padding: .45rem;
+  border: 1px solid var(--line); border-radius: var(--r-md); background: var(--panel);
+  backdrop-filter: blur(30px) saturate(1.4); -webkit-backdrop-filter: blur(30px) saturate(1.4); box-shadow: var(--shadow); }
+.menu[hidden] { display: none; }
+.menu .opt { display: flex; align-items: center; gap: .65rem; width: 100%; padding: .6rem .7rem; border: 0; border-radius: var(--r-sm);
+  background: transparent; color: var(--text); font: inherit; font-size: .92rem; text-align: left; cursor: pointer; }
+.menu .opt:hover { background: var(--glass-2); }
+.menu .opt svg { width: 17px; height: 17px; color: var(--muted); }
+.menu .opt .ck { margin-left: auto; width: 16px; height: 16px; color: var(--accent); opacity: 0; }
+.menu .opt[aria-checked="true"] .ck { opacity: 1; }
+.menu .opt[aria-checked="true"] { background: var(--accent-soft); }
+.sw { width: 16px; height: 16px; border-radius: 50%; flex: none; box-shadow: inset 0 0 0 1px var(--hi); }
+.pal-menu { min-width: 190px; }
+
+/* Hero */
+.hero { padding: clamp(3rem, 9vw, 6.5rem) 0 clamp(2.5rem, 6vw, 4rem); }
+.pill { display: inline-flex; align-items: center; gap: .55rem; padding: .38rem .85rem .38rem .7rem; border: 1px solid var(--line);
+  border-radius: var(--r-pill); background: var(--glass); font-size: .82rem; color: var(--muted);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+.pill i { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 4px var(--accent-soft); }
+h1 { margin: 1.4rem 0 0; font-weight: 300; font-size: clamp(2.7rem, 9.2vw, 6rem); line-height: 1.02; letter-spacing: -.035em; max-width: 12ch; }
+h1 em { font-style: normal; color: var(--muted); display: block; }
+.lede { margin: 1.6rem 0 0; max-width: 52ch; color: var(--muted); font-size: clamp(1rem, 2.2vw, 1.14rem); }
+.facts { display: flex; flex-wrap: wrap; gap: .5rem; margin: 2rem 0 0; padding: 0; list-style: none; }
+.facts li { display: inline-flex; align-items: center; gap: .45rem; padding: .35rem .75rem; border-radius: var(--r-pill);
+  border: 1px solid var(--line); font-size: .82rem; color: var(--muted); }
+.facts svg { width: 14px; height: 14px; color: var(--accent); }
+
+/* Apps */
+.apps-head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; margin-bottom: var(--s4); }
+h2 { margin: 0; font-weight: 400; font-size: clamp(1.5rem, 4vw, 2rem); letter-spacing: -.02em; }
+.count { color: var(--muted); font-size: .9rem; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: var(--s4); }
+.card { --cc: color-mix(in srgb, hsl(var(--ch) var(--cs) var(--al)) 62%, var(--accent));
+  position: relative; display: flex; flex-direction: column; gap: 1.1rem; min-height: 340px; padding: clamp(1.4rem, 3.5vw, 2rem);
+  border: 1px solid var(--line); border-radius: var(--r-lg); box-shadow: var(--shadow), inset 0 1px 0 var(--hi);
+  background: radial-gradient(120% 90% at 0% 0%, color-mix(in srgb, var(--cc) 17%, transparent), transparent 62%), var(--glass);
+  backdrop-filter: blur(26px) saturate(1.35); -webkit-backdrop-filter: blur(26px) saturate(1.35);
+  transition: transform var(--t-med) var(--ease), border-color var(--t-med); }
+.card::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0; transition: opacity var(--t-med);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--cc) 45%, transparent); }
+@media (hover: hover) { .card:hover { transform: translateY(-4px); } .card:hover::after { opacity: 1; } }
+.card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; }
+.icon { display: grid; place-items: center; width: 60px; height: 60px; border-radius: 18px; color: var(--cc);
+  background: color-mix(in srgb, var(--cc) 14%, transparent); border: 1px solid color-mix(in srgb, var(--cc) 30%, transparent); box-shadow: inset 0 1px 0 var(--hi); }
+.icon svg { width: 30px; height: 30px; }
+.status { display: inline-flex; align-items: center; gap: .45rem; padding: .3rem .7rem; border-radius: var(--r-pill); border: 1px solid var(--line);
+  background: var(--glass); font-size: .8rem; color: var(--muted); white-space: nowrap; }
+.status svg { width: 13px; height: 13px; color: var(--cc); }
+.card h3 { margin: .2rem 0 0; font-weight: 500; font-size: clamp(1.5rem, 3.6vw, 1.85rem); letter-spacing: -.02em; }
+.card p { margin: 0; color: var(--muted); max-width: 40ch; }
+.tags { display: flex; flex-wrap: wrap; gap: .4rem; margin: 0; padding: 0; list-style: none; }
+.tags li { padding: .22rem .65rem; border-radius: var(--r-pill); border: 1px solid var(--line); font-size: .78rem; color: var(--muted); }
+.foot { margin-top: auto; display: flex; align-items: center; gap: .9rem; flex-wrap: wrap; }
+.open { display: inline-flex; align-items: center; justify-content: center; gap: .6rem; min-height: 48px; padding: 0 1.4rem; border: 0; border-radius: var(--r-pill);
+  background: var(--cc); color: var(--on-accent); font: inherit; font-weight: 600; font-size: .97rem; text-decoration: none; cursor: pointer;
+  transition: transform var(--t-fast), filter var(--t-fast), box-shadow var(--t-fast); box-shadow: 0 8px 22px -10px var(--cc); }
+.open:hover { filter: brightness(1.08); } .open:active { transform: scale(.97); }
+.open svg { width: 17px; height: 17px; transition: transform var(--t-fast) var(--ease); }
+.open:hover svg { transform: translate(2px, -2px); }
+.open[aria-disabled="true"] { background: transparent; color: var(--muted); border: 1px dashed var(--line); box-shadow: none; cursor: not-allowed; filter: none; transform: none; }
+.hint { font-size: .82rem; color: var(--muted); max-width: 30ch; }
+
+/* Statement + footer */
+.statement { margin: clamp(3.5rem, 8vw, 6rem) auto 0; padding: clamp(1.6rem, 4vw, 2.4rem) 0; border-top: 1px solid var(--line); display: grid; gap: .5rem; }
+.statement p { margin: 0; color: var(--muted); max-width: 46ch; }
+.statement strong { font-weight: 400; font-size: clamp(1.15rem, 3vw, 1.4rem); letter-spacing: -.015em; }
+footer { padding: var(--s5) 0 var(--s5); color: var(--muted); font-size: .85rem; }
+footer .wrap { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .6rem 1.5rem; }
+footer .brand { font-size: .92rem; color: var(--text); }
+
+/* Centered layout */
+.hero, .apps-head, .card, .statement, footer .wrap { text-align: center; }
+h1, .lede, .card p, .statement p { margin-inline: auto; }
+h1 { max-width: 14ch; }
+.facts, .tags, .foot, .card-top { justify-content: center; }
+.apps-head { flex-direction: column; align-items: center; gap: .3rem; }
+.card { align-items: center; }
+.card-top { flex-direction: column; align-items: center; }
+.statement { justify-items: center; text-align: center; }
+.statement strong, .statement p { display: block; width: 100%; text-align: center; }
+footer .wrap { flex-direction: column; justify-content: center; }
+.hint { max-width: 34ch; }
+
+/* Fallbacks + motion */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .nav-in, .pill { background: var(--panel); } .card { background: radial-gradient(120% 90% at 0% 0%, color-mix(in srgb, var(--cc) 17%, transparent), transparent 62%), var(--panel); }
+}
+@keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+.hero .wrap > * { animation: rise .7s var(--ease) both; }
+.hero .wrap > *:nth-child(2) { animation-delay: .07s; } .hero .wrap > *:nth-child(3) { animation-delay: .14s; } .hero .wrap > *:nth-child(4) { animation-delay: .2s; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
+@media (max-width: 520px) {
+  .wrap { width: calc(100% - 1.5rem); } .nav-in { padding-left: .85rem; }
+  .ibtn .lbl { display: none; } .ibtn { padding: 0; width: 40px; }
+  .ctrls { gap: .15rem; } .menu { right: -.2rem; } .pal-menu { right: -2.6rem; }
+  .open { width: 100%; } .hint { max-width: none; }
+}
+</style>
+</head>
+<body>
+<div class="atmo" aria-hidden="true"></div>
+
+<header class="nav">
+  <div class="wrap">
+    <div class="nav-in">
+      <a class="brand" href="./" aria-label="baffling space, home">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3.5" y="3.5" width="11" height="11" rx="3.5" stroke="currentColor" stroke-width="1.6"/><rect x="9.5" y="9.5" width="11" height="11" rx="3.5" fill="var(--accent)" fill-opacity=".4" stroke="var(--accent)" stroke-width="1.6"/></svg>
+        <span><b>baffling</b><span class="slash">/</span><span class="sp">space</span></span>
+      </a>
+      <div class="ctrls">
+        <button class="ibtn" id="themeBtn" aria-haspopup="true" aria-expanded="false" aria-controls="themeMenu" aria-label="Choose appearance">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 3.5v17" /><path d="M12 3.5a8.5 8.5 0 0 1 0 17z" fill="currentColor" stroke="none" opacity=".55"/></svg>
+          <span class="lbl" id="themeLbl">Dark</span>
+        </button>
+        <button class="ibtn" id="palBtn" aria-haspopup="true" aria-expanded="false" aria-controls="palMenu" aria-label="Choose color palette">
+          <span class="dot" aria-hidden="true"></span><span class="lbl" id="palLbl">Graphite</span>
+        </button>
+        <button class="ibtn" id="toggleBtn" aria-label="Switch between light and dark">
+          <svg id="toggleIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"></svg>
+        </button>
+        <div class="menu" id="themeMenu" role="menu" aria-label="Appearance" hidden></div>
+        <div class="menu pal-menu" id="palMenu" role="menu" aria-label="Color palette" hidden></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <span class="pill"><i aria-hidden="true"></i>Independent, ad-free, no tracking</span>
+      <h1>Your tools.<em>Your rules.</em></h1>
+      <p class="lede">Thoughtful tools, no unnecessary noise.</p>
+      <ul class="facts">
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>No accounts</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>No trackers</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Hosted on GitHub Pages</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="wrap" aria-labelledby="appsTitle">
+    <div class="apps-head"><h2 id="appsTitle">Your apps</h2><span class="count" id="count"></span></div>
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <section class="wrap statement">
+    <strong>Small tools. Thoughtfully made.</strong>
+    <p>Designed by barman</p>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <a class="brand" href="./" aria-label="baffling space, home">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3.5" y="3.5" width="11" height="11" rx="3.5" stroke="currentColor" stroke-width="1.6"/><rect x="9.5" y="9.5" width="11" height="11" rx="3.5" fill="var(--accent)" fill-opacity=".4" stroke="var(--accent)" stroke-width="1.6"/></svg>
+      <span><b>baffling</b><span class="slash">/</span><span class="sp">space</span></span>
+    </a>
+    <span>&copy; <span id="year">2026</span> baffling space. Made with intention.</span>
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   CONFIG — edit here
+   Paste the live GitHub Pages URL of Baffling Notes between the
+   quotes, e.g. "https://your-name.github.io/baffling-notes/"
+   Until then, its card shows a clear "link not set" state.
+   ============================================================ */
+const BAFFLING_NOTES_URL = "https://baffled-individual.github.io/Baffling-Notes/";
+
+/* Icons: inline SVG, no external requests */
+const ICONS = {
+  fitness: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h2.5M18.5 12H21M6.5 7.5v9M17.5 7.5v9M9 9.5v5M15 9.5v5M9 12h6"/></svg>',
+  notes: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3.5h8.5L19.5 7.5V19a1.5 1.5 0 0 1-1.5 1.5H7A1.5 1.5 0 0 1 5.5 19V5A1.5 1.5 0 0 1 7 3.5z"/><path d="M15 3.8V8h4.2M8.8 12h6.4M8.8 15.5h4.2"/></svg>'
+};
+
+/* To add an app: add one object below.
+   hue / sat set its accent (blended with the global palette). */
+const APPS = [
+  {
+    name: "Baffled Aesthetic",
+    description: "Your personal, offline-friendly fitness tracker. Keep your workouts organized and your progress in your own hands.",
+    url: "https://baffled-individual.github.io/aesthetic/",
+    icon: "fitness", hue: 92, sat: 42,
+    tags: ["Fitness", "Offline-first"]
+  },
+  {
+    name: "Baffling Notes",
+    description: "A calm, customizable space for your thoughts. Rich writing, beautiful glass themes, and notes that stay yours.",
+    url: BAFFLING_NOTES_URL,
+    icon: "notes", hue: 232, sat: 62,
+    tags: ["Notes", "Offline-first", "Calm"]
+  }
+];
+
+const ARROW = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M8.5 7H17v8.5"/></svg>';
+const CHECK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12.3l2.7 2.7L16 9.6"/></svg>';
+const RING = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke-dasharray="3.4 3.4"/></svg>';
+
+function isValidUrl(u) { return typeof u === "string" && /^https:\/\/\S+$/.test(u.trim()); }
+function esc(s) { const d = document.createElement("div"); d.textContent = s; return d.innerHTML; }
+
+function renderApps() {
+  const grid = document.getElementById("grid");
+  grid.innerHTML = APPS.map(function (a, i) {
+    const ok = isValidUrl(a.url);
+    const action = ok
+      ? '<a class="open" href="' + esc(a.url.trim()) + '" target="_blank" rel="noopener noreferrer" aria-label="Open ' + esc(a.name) + ' in a new tab"><span>Open app</span>' + ARROW + '</a>'
+      : '<button class="open" type="button" aria-disabled="true" aria-describedby="hint' + i + '"><span>Open app</span>' + ARROW + '</button>' +
+        '<span class="hint" id="hint' + i + '">Link not set yet. Add this app\'s URL in the config at the top of the script.</span>';
+    return '<article class="card" style="--ch:' + a.hue + ';--cs:' + a.sat + '%">' +
+      '<div class="card-top"><div class="icon" aria-hidden="true">' + ICONS[a.icon] + '</div>' +
+      '<span class="status">' + (ok ? CHECK + 'Live' : RING + 'Link not set') + '</span></div>' +
+      '<div><h3>' + esc(a.name) + '</h3></div><p>' + esc(a.description) + '</p>' +
+      '<ul class="tags" aria-label="Categories">' + a.tags.map(function (t) { return '<li>' + esc(t) + '</li>'; }).join("") + '</ul>' +
+      '<div class="foot">' + action + '</div></article>';
+  }).join("");
+  grid.querySelectorAll('[aria-disabled="true"]').forEach(function (b) {
+    b.addEventListener("click", function (e) { e.preventDefault(); });
+  });
+  document.getElementById("count").textContent = APPS.length + (APPS.length === 1 ? " app" : " apps");
+}
+
+/* ---------- Appearance ---------- */
+const THEMES = [
+  { id: "dark", label: "Dark", icon: '<path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/>' },
+  { id: "amoled", label: "AMOLED", icon: '<circle cx="12" cy="12" r="8.5" fill="currentColor"/>' },
+  { id: "light", label: "Light", icon: '<circle cx="12" cy="12" r="4"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6L7 7M17 17l1.4 1.4M5.6 18.4L7 17M17 7l1.4-1.4"/>' },
+  { id: "system", label: "System", icon: '<rect x="3.5" y="4.5" width="17" height="11.5" rx="2"/><path d="M9 20h6M12 16v4"/>' }
+];
+const PALETTES = [
+  ["graphite", "Graphite", "hsl(220 8% 72%)"], ["arctic", "Arctic", "hsl(195 72% 62%)"], ["lavender", "Lavender", "hsl(262 62% 72%)"],
+  ["ocean", "Ocean", "hsl(214 78% 66%)"], ["forest", "Forest", "hsl(150 46% 58%)"], ["ember", "Ember", "hsl(22 82% 62%)"], ["rose", "Rose", "hsl(340 66% 70%)"]
+];
+const CHK = '<svg class="ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+const root = document.documentElement;
+const mq = matchMedia("(prefers-color-scheme: light)");
+const THEME_COLORS = { dark: "#0f1114", amoled: "#000000", light: "#f3f2ef" };
+let theme = root.dataset.theme, palette = root.dataset.palette;
+
+function save(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+function resolved() { return theme === "system" ? (mq.matches ? "light" : "dark") : theme; }
+
+function applyAppearance() {
+  if (!THEMES.some(function (t) { return t.id === theme; })) theme = "amoled";
+  if (!PALETTES.some(function (p) { return p[0] === palette; })) palette = "rose";
+  const mode = resolved();
+  root.dataset.theme = theme; root.dataset.mode = mode; root.dataset.palette = palette;
+  document.querySelector('meta[name="theme-color"]').setAttribute("content", THEME_COLORS[mode]);
+  const t = THEMES.find(function (x) { return x.id === theme; });
+  document.getElementById("themeLbl").textContent = t.label;
+  document.getElementById("palLbl").textContent = PALETTES.find(function (p) { return p[0] === palette; })[1];
+  document.getElementById("toggleIcon").innerHTML = mode === "light" ? THEMES[0].icon : THEMES[2].icon;
+  document.getElementById("toggleBtn").setAttribute("aria-label", mode === "light" ? "Switch to dark mode" : "Switch to light mode");
+  document.querySelectorAll("#themeMenu .opt").forEach(function (o) { o.setAttribute("aria-checked", String(o.dataset.id === theme)); });
+  document.querySelectorAll("#palMenu .opt").forEach(function (o) { o.setAttribute("aria-checked", String(o.dataset.id === palette)); });
+}
+
+function buildMenus() {
+  document.getElementById("themeMenu").innerHTML = THEMES.map(function (t) {
+    return '<button class="opt" role="menuitemradio" aria-checked="false" data-id="' + t.id + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + t.icon + '</svg>' + t.label + CHK + '</button>';
+  }).join("");
+  document.getElementById("palMenu").innerHTML = PALETTES.map(function (p) {
+    return '<button class="opt" role="menuitemradio" aria-checked="false" data-id="' + p[0] + '"><span class="sw" style="background:' + p[2] + '"></span>' + p[1] + CHK + '</button>';
+  }).join("");
+}
+
+const pairs = [["themeBtn", "themeMenu"], ["palBtn", "palMenu"]];
+function closeMenus(except) {
+  pairs.forEach(function (p) {
+    if (p[1] === except) return;
+    document.getElementById(p[1]).hidden = true; document.getElementById(p[0]).setAttribute("aria-expanded", "false");
+  });
+}
+pairs.forEach(function (p) {
+  const btn = document.getElementById(p[0]), menu = document.getElementById(p[1]);
+  btn.addEventListener("click", function (e) {
+    e.stopPropagation(); closeMenus(p[1]);
+    menu.hidden = !menu.hidden; btn.setAttribute("aria-expanded", String(!menu.hidden));
+    if (!menu.hidden) { (menu.querySelector('[aria-checked="true"]') || menu.querySelector(".opt")).focus(); }
+  });
+  menu.addEventListener("click", function (e) {
+    const o = e.target.closest(".opt"); if (!o) return;
+    if (p[1] === "themeMenu") { theme = o.dataset.id; save("bs-theme", theme); } else { palette = o.dataset.id; save("bs-palette", palette); }
+    applyAppearance(); closeMenus(); btn.focus();
+  });
+  menu.addEventListener("keydown", function (e) {
+    const items = Array.from(menu.querySelectorAll(".opt")), i = items.indexOf(document.activeElement);
+    if (e.key === "ArrowDown") { e.preventDefault(); items[(i + 1) % items.length].focus(); }
+    if (e.key === "ArrowUp") { e.preventDefault(); items[(i - 1 + items.length) % items.length].focus(); }
+  });
+});
+document.addEventListener("click", function (e) { if (!e.target.closest(".ctrls")) closeMenus(); });
+document.addEventListener("keydown", function (e) {
+  if (e.key === "Escape") { const open = pairs.find(function (p) { return !document.getElementById(p[1]).hidden; }); closeMenus(); if (open) document.getElementById(open[0]).focus(); }
+});
+document.getElementById("toggleBtn").addEventListener("click", function () {
+  theme = resolved() === "light" ? "dark" : "light"; save("bs-theme", theme); applyAppearance(); closeMenus();
+});
+(mq.addEventListener ? mq.addEventListener.bind(mq, "change") : mq.addListener.bind(mq))(function () { if (theme === "system") applyAppearance(); });
+
+/* ---------- Haptics ----------
+   Android/Chrome: navigator.vibrate. iPhone (Safari 17.4+): a hidden switch
+   toggle gives a light tick. Silently does nothing where unsupported. */
+const tick = (function () {
+  const l = document.createElement("label");
+  l.setAttribute("aria-hidden", "true");
+  l.style.cssText = "position:fixed;left:-9999px;top:0;opacity:0;pointer-events:none";
+  const i = document.createElement("input"); i.type = "checkbox"; i.setAttribute("switch", ""); i.tabIndex = -1;
+  l.appendChild(i); document.body.appendChild(l); return l;
+})();
+const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)");
+function haptic(pattern) {
+  if (reduceMotion.matches) return;
+  try {
+    if (navigator.vibrate) { navigator.vibrate(pattern); return; }
+    const n = Array.isArray(pattern) ? pattern.length : 1;
+    tick.click(); if (n > 2) setTimeout(function () { tick.click(); }, 90);
+  } catch (e) {}
+}
+document.addEventListener("click", function (e) {
+  const el = e.target.closest(".open, .ibtn, .opt"); if (!el) return;
+  if (el.matches('.open[aria-disabled="true"]')) haptic([18, 50, 18, 50, 18]);   /* link not set */
+  else if (el.matches(".opt")) haptic(14);                                         /* selection */
+  else if (el.matches(".open")) haptic(22);                                        /* launching an app */
+  else haptic(10);                                                                  /* controls */
+}, true);
+
+buildMenus(); applyAppearance(); renderApps();
+document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
