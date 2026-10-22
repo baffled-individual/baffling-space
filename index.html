@@ -192,6 +192,13 @@ footer .brand { font-size: .92rem; color: var(--text); }
 /* Scroll reveal */
 .js .rv { opacity: 0; transform: translateY(32px); transition: opacity .7s var(--ease), transform .7s var(--ease); transition-delay: var(--d, 0s); }
 .js .rv.in { opacity: 1; transform: none; }
+/* Update pop-up */
+.upd { position: fixed; left: 50%; bottom: max(1.2rem, env(safe-area-inset-bottom)); z-index: 60; translate: -50% 0; width: min(360px, calc(100% - 1.5rem)); display: flex; flex-direction: column; align-items: center; gap: .3rem; padding: 1.2rem 1.2rem 1rem; text-align: center; border: 1px solid var(--line); border-radius: 24px; background: var(--panel); box-shadow: var(--shadow), 0 0 0 1px color-mix(in srgb, var(--accent) 22%, transparent), inset 0 1px 0 var(--hi); animation: pop .6s var(--ease) both; }
+.upd b { font-weight: 600; font-size: 1.05rem; letter-spacing: -.01em; }
+.upd > span { font-size: .88rem; color: var(--muted); }
+.upd .acts { display: flex; gap: .5rem; margin-top: .8rem; }
+.upd .open { --cc: var(--accent); min-height: 44px; padding: 0 1.8rem; }
+@keyframes pop { from { opacity: 0; transform: translateY(26px) scale(.95); } }
 @property --ang { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
 @keyframes spin { to { --ang: 360deg; } }
 @keyframes bob { 50% { transform: translateY(-3px); } }
@@ -610,6 +617,44 @@ function bindCards() {
 
 buildMenus(); applyAppearance(); renderApps(); bindCards(); syncStatic(); setupScenes(); setupMarquee(); buildHero(); measure(); request();
 document.getElementById("year").textContent = new Date().getFullYear();
+
+/* ---------- Update check ----------
+   Compares the live index.html with the copy that was fetched when this page opened.
+   When they differ, a pop-up asks to update (OK = reload the newest version). */
+(function () {
+  if (!/^https?:$/.test(location.protocol)) return;
+  if (/[?&]u=/.test(location.search)) history.replaceState(null, "", location.pathname + location.hash);
+  const base = location.href.split("#")[0].split("?")[0];
+  const hash = t => { let h = 5381; for (let i = 0; i < t.length; i++) h = ((h << 5) + h + t.charCodeAt(i)) | 0; return h + ":" + t.length; };
+  let baseline = null, shown = false, busy = false, snooze = 0;
+  async function check() {
+    if (shown || busy || document.hidden) return;
+    busy = true;
+    try {
+      const r = await fetch(base + "?_=" + Date.now(), { cache: "no-store" });
+      if (!r.ok) throw 0;
+      const h = hash(await r.text());
+      if (baseline === null) baseline = h; else if (h !== baseline && Date.now() > snooze) showUpdate();
+    } catch (e) {} finally { busy = false; }
+  }
+  function showUpdate() {
+    shown = true;
+    const d = document.createElement("div");
+    d.className = "upd"; d.setAttribute("role", "alertdialog"); d.setAttribute("aria-labelledby", "updT"); d.setAttribute("aria-describedby", "updD");
+    d.innerHTML = '<b id="updT">New update available</b><span id="updD">Click OK to update to the latest version.</span><div class="acts"><button type="button" class="open" id="updOk"><span>OK</span></button><button type="button" class="ibtn" id="updLater">Later</button></div>';
+    document.body.appendChild(d);
+    const later = () => { d.remove(); shown = false; snooze = Date.now() + 10 * 60 * 1000; document.removeEventListener("keydown", esc); };
+    const esc = e => { if (e.key === "Escape") later(); };
+    document.getElementById("updOk").addEventListener("click", () => { const u = new URL(location.href); u.searchParams.set("u", Date.now()); location.replace(u.toString()); });
+    document.getElementById("updLater").addEventListener("click", later);
+    document.addEventListener("keydown", esc);
+    haptic([12, 40, 12]);
+  }
+  setTimeout(check, 2500);
+  setInterval(check, 5 * 60 * 1000);
+  document.addEventListener("visibilitychange", check);
+  addEventListener("online", check);
+})();
 </script>
 </body>
 </html>
