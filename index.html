@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="amoled" data-mode="amoled" data-palette="rose">
+<html lang="en" data-theme="light" data-mode="light" data-palette="ocean">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>baffling space — the home of my apps</title>
 <meta name="description" content="baffling space is a quiet home for a small collection of personal tools: a fitness tracker and a notes app, built independently.">
-<meta name="theme-color" content="#000000">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%23000'/%3E%3Crect x='5' y='5' width='9' height='9' rx='3' fill='none' stroke='%23e8a3b8' stroke-width='1.6'/%3E%3Crect x='10' y='10' width='9' height='9' rx='3' fill='%23e8a3b8' fill-opacity='.45' stroke='%23e8a3b8' stroke-width='1.6'/%3E%3C/svg%3E">
+<meta name="theme-color" content="#f3f2ef">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%23000'/%3E%3Crect x='5' y='5' width='9' height='9' rx='3' fill='none' stroke='%235b9cf0' stroke-width='1.6'/%3E%3Crect x='10' y='10' width='9' height='9' rx='3' fill='%235b9cf0' fill-opacity='.45' stroke='%235b9cf0' stroke-width='1.6'/%3E%3C/svg%3E">
 <script>
 /* Apply saved appearance before first paint. Stores only theme + palette. */
 (function () {
-  var r = document.documentElement, t = "amoled", p = "rose";
+  var r = document.documentElement, t = "light", p = "ocean";
   try { t = localStorage.getItem("bs-theme") || t; p = localStorage.getItem("bs-palette") || p; } catch (e) {}
   var mode = t === "system" ? (matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark") : t;
   r.dataset.theme = t; r.dataset.mode = mode; r.dataset.palette = p; r.classList.add("js");
@@ -21,7 +21,7 @@
   --font: "Avenir Next", "Segoe UI Variable Display", "Segoe UI", "SF Pro Display", system-ui, -apple-system, "Helvetica Neue", sans-serif;
   --r-sm: 10px; --r-md: 16px; --r-lg: 28px; --r-pill: 999px;
   --ease: cubic-bezier(.22, .8, .24, 1); --t-fast: .16s; --t-med: .32s;
-  --ah: 340; --as: 66%;
+  --ah: 214; --as: 78%;
   --accent: hsl(var(--ah) var(--as) var(--al));
   --accent-soft: hsl(var(--ah) var(--as) var(--al) / .14);
 }
@@ -32,9 +32,9 @@
 [data-palette="forest"]   { --ah: 150; --as: 46%; }
 [data-palette="ember"]    { --ah: 22;  --as: 82%; }
 [data-palette="rose"]     { --ah: 340; --as: 66%; }
-[data-mode="dark"] { color-scheme: dark; --al: 72%; --bg: #0f1114; --text: #eceef1; --muted: #9ba0a9; --glass: rgba(255,255,255,.045); --glass-2: rgba(255,255,255,.075); --panel: rgba(24,26,31,.84); --line: rgba(255,255,255,.09); --hi: rgba(255,255,255,.14); --ta: .24; --on-accent: #0b0c0e; --shadow: 0 24px 60px -28px rgba(0,0,0,.75); }
-[data-mode="amoled"] { color-scheme: dark; --al: 72%; --bg: #000; --text: #eceef1; --muted: #9296a0; --glass: rgba(255,255,255,.035); --glass-2: rgba(255,255,255,.06); --panel: rgba(12,12,14,.9); --line: rgba(255,255,255,.08); --hi: rgba(255,255,255,.11); --ta: .16; --on-accent: #050506; --shadow: 0 24px 60px -28px rgba(0,0,0,.9); }
-[data-mode="light"] { color-scheme: light; --al: 36%; --bg: #f3f2ef; --text: #181a1f; --muted: #575d68; --glass: rgba(255,255,255,.6); --glass-2: rgba(255,255,255,.82); --panel: rgba(255,255,255,.92); --line: rgba(20,24,34,.11); --hi: rgba(255,255,255,.9); --ta: .22; --on-accent: #fff; --shadow: 0 20px 44px -26px rgba(30,34,48,.35); }
+[data-mode="dark"] { --solid: #16181d; color-scheme: dark; --al: 72%; --bg: #0f1114; --text: #eceef1; --muted: #9ba0a9; --glass: rgba(255,255,255,.045); --glass-2: rgba(255,255,255,.075); --panel: rgba(24,26,31,.84); --line: rgba(255,255,255,.09); --hi: rgba(255,255,255,.14); --ta: .24; --on-accent: #0b0c0e; --shadow: 0 24px 60px -28px rgba(0,0,0,.75); }
+[data-mode="amoled"] { --solid: #0c0c0f; color-scheme: dark; --al: 72%; --bg: #000; --text: #eceef1; --muted: #9296a0; --glass: rgba(255,255,255,.035); --glass-2: rgba(255,255,255,.06); --panel: rgba(12,12,14,.9); --line: rgba(255,255,255,.08); --hi: rgba(255,255,255,.11); --ta: .16; --on-accent: #050506; --shadow: 0 24px 60px -28px rgba(0,0,0,.9); }
+[data-mode="light"] { --solid: #fcfbf9; color-scheme: light; --al: 36%; --bg: #f3f2ef; --text: #181a1f; --muted: #575d68; --glass: rgba(255,255,255,.6); --glass-2: rgba(255,255,255,.82); --panel: rgba(255,255,255,.92); --line: rgba(20,24,34,.11); --hi: rgba(255,255,255,.9); --ta: .22; --on-accent: #fff; --shadow: 0 20px 44px -26px rgba(30,34,48,.35); }
 *, *::before, *::after { box-sizing: border-box; }
 html { scrollbar-gutter: stable both-edges; -webkit-text-size-adjust: 100%; scroll-padding-top: 5rem; }
 body { margin: 0; min-height: 100vh; font-family: var(--font); color: var(--text); background: var(--bg); line-height: 1.55; overflow-x: hidden; transition: background-color var(--t-med), color var(--t-med);
@@ -54,6 +54,13 @@ a { color: inherit; }
 .atmo i:nth-child(2)::before { background: radial-gradient(closest-side, hsl(calc(var(--ah) + 42) var(--as) 50%), transparent); animation-duration: 29s; animation-delay: -9s; animation-direction: alternate-reverse; }
 .atmo i:nth-child(3)::before { background: radial-gradient(closest-side, hsl(calc(var(--ah) - 36) var(--as) 46%), transparent); animation-duration: 36s; animation-delay: -17s; }
 @keyframes drift { 0% { transform: translate3d(0,0,0) scale(1); } 50% { transform: translate3d(9vw,6vh,0) scale(1.2); } 100% { transform: translate3d(-7vw,10vh,0) scale(.9); } }
+/* Background chains: run along their own axis as you scroll (transform only) */
+.bgcs { position: absolute; inset: 0; opacity: 0; }
+.bgc { position: absolute; left: -30vw; width: 160vw; height: 28px; background: var(--muted); opacity: .17; will-change: transform;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 28'%3E%3Cg fill='none' stroke='%23000' stroke-width='3'%3E%3Crect x='-7' y='4' width='44' height='20' rx='10'/%3E%3Crect x='53' y='4' width='44' height='20' rx='10'/%3E%3Crect x='23' y='11' width='44' height='6' rx='3'/%3E%3Crect x='-37' y='11' width='44' height='6' rx='3'/%3E%3C/g%3E%3C/svg%3E") repeat-x 0 0 / 60px 28px; mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 28'%3E%3Cg fill='none' stroke='%23000' stroke-width='3'%3E%3Crect x='-7' y='4' width='44' height='20' rx='10'/%3E%3Crect x='53' y='4' width='44' height='20' rx='10'/%3E%3Crect x='23' y='11' width='44' height='6' rx='3'/%3E%3Crect x='-37' y='11' width='44' height='6' rx='3'/%3E%3C/g%3E%3C/svg%3E") repeat-x 0 0 / 60px 28px; }
+.bgc:nth-child(1) { top: 17%; rotate: -7deg; }
+.bgc:nth-child(2) { top: 52%; rotate: 5deg; background: var(--accent); opacity: .24; }
+.bgc:nth-child(3) { top: 85%; rotate: -4deg; }
 .spot { position: fixed; left: 0; top: 0; width: 520px; height: 520px; margin: -260px 0 0 -260px; z-index: -1; pointer-events: none; opacity: 0; transition: opacity .6s; will-change: transform; background: radial-gradient(closest-side, hsl(var(--ah) var(--as) 60% / .13), transparent); }
 .spot.on { opacity: 1; }
 .bar { position: fixed; top: 0; left: 0; right: 0; height: 2px; z-index: 40; transform-origin: 0 50%; transform: scaleX(0); will-change: transform; background: linear-gradient(90deg, hsl(calc(var(--ah) - 30) var(--as) 60%), var(--accent)); }
@@ -84,15 +91,22 @@ a { color: inherit; }
 .js:not(.static) .hero-pin { height: 190vh; height: 190svh; }
 .js:not(.static) .hero { position: sticky; top: 0; }
 /* Hero: two interlocked links on chains; scroll pulls the chains taut, the link snaps open, everything flies apart */
-.hero-art { position: relative; width: min(780px, 100%); aspect-ratio: 1000 / 240; margin: 0 auto .6rem; overflow: hidden; pointer-events: none; animation: fade 1.2s .1s both; }
-.hero-art svg { display: block; width: 100%; height: 100%; will-change: transform; }
-@media (max-width: 700px) { .hero-art { aspect-ratio: 2.6; } .hero-art svg { width: 160%; height: auto; margin-left: -30%; } }
+.hero-art .stage { position: absolute; left: 50%; top: 0; width: 1000px; height: 240px; margin-left: -500px; transform-origin: 50% 0; transform: scale(var(--s, .78)); }
+.hero-art .stage > * { position: absolute; left: 0; top: 0; will-change: transform; }
+.hero-art .ch { will-change: opacity; }
+.hero-art .cl { position: absolute; left: 0; top: 0; box-sizing: border-box; border: 3.4px solid var(--muted); will-change: transform, opacity; }
+.hero-art .cl.f { width: 44px; height: 24px; margin: -12px 0 0 -22px; border-radius: 12px; }
+.hero-art .cl.e { width: 44px; height: 9px; margin: -4.5px 0 0 -22px; border-radius: 5px; }
+.hero-art .ml { width: 132px; height: 132px; margin: -66px 0 0 -66px; }
+.hero-art .ml svg { display: block; width: 100%; height: 100%; }
+.hero-art #lkA2 { clip-path: inset(110px 0 0 66px); }
+.hero-art .sp { position: absolute; left: 0; top: 0; width: 12px; height: 3px; margin-top: -1.5px; border-radius: 2px; background: var(--accent); transform-origin: 0 50%; opacity: 0; }
+.hero-art .ring { width: 160px; height: 160px; margin: -80px 0 0 -80px; border: 2px solid var(--accent); border-radius: 50%; opacity: 0; }
+.hero-art { contain: layout paint; position: relative; width: min(780px, 100%); aspect-ratio: 1000 / 240; margin: 0 auto .6rem; overflow: hidden; pointer-events: none; animation: fade 1.2s .1s both; }
+@media (max-width: 700px) { .hero-art { aspect-ratio: 2.6; } }
 .hero-art .la { stroke: color-mix(in srgb, var(--text) 85%, var(--bg)); stroke-width: 6; }
 .hero-art .lb { stroke: var(--accent); stroke-width: 6; }
 .hero-art .gap { stroke: var(--bg); stroke-width: 15; }
-.hero-art .ch rect { stroke: var(--muted); stroke-width: 3.4; }
-.hero-art .shock { stroke: var(--accent); stroke-width: 2; opacity: 0; }
-.hero-art #sparks line { stroke: var(--accent); stroke-width: 3; }
 @keyframes fade { from { opacity: 0; } }
 .hero .wrap { position: relative; }
 .pill { display: inline-flex; align-items: center; gap: .55rem; padding: .38rem .85rem .38rem .7rem; border: 1px solid var(--line); border-radius: var(--r-pill); background: var(--glass); font-size: .82rem; color: var(--muted); }
@@ -110,8 +124,8 @@ h1 .ln:first-child span { background: linear-gradient(100deg, var(--text) 30%, v
 
 /* Scroll-driven marquee */
 .mq { margin: 1rem 0 3.5rem; overflow: hidden; contain: layout paint; user-select: none; }
-.mq-row { display: flex; width: max-content; will-change: transform; animation: mq 46s linear infinite; }
-.mq-row.b { animation-duration: 58s; animation-direction: reverse; }
+.mq-row { display: flex; width: max-content; will-change: transform; animation: mq var(--mqd, 46s) linear infinite; }
+.mq-row.b { animation-direction: reverse; }
 .mq.paused .mq-row { animation-play-state: paused; }
 @keyframes mq { to { transform: translate3d(-16.6667%, 0, 0); } }
 .mq-row span { display: inline-flex; align-items: center; gap: 1.6rem; padding-right: 1.6rem; font-size: clamp(3rem, 9vw, 6.5rem); font-weight: 300; letter-spacing: -.04em; line-height: 1.08; white-space: nowrap; color: transparent; -webkit-text-stroke: 1px color-mix(in srgb, var(--muted) 75%, transparent); }
@@ -123,18 +137,21 @@ h1 .ln:first-child span { background: linear-gradient(100deg, var(--text) 30%, v
 .apps-head { display: flex; flex-direction: column; align-items: center; gap: .3rem; text-align: center; margin-bottom: 2.2rem; }
 h2 { margin: 0; font-weight: 300; font-size: clamp(2rem, 6vw, 3.4rem); letter-spacing: -.035em; }
 .count { color: var(--muted); font-size: .9rem; }
-.card { --cc: color-mix(in srgb, hsl(var(--ch) var(--cs) var(--al)) 62%, var(--accent)); --rx: 0deg; --ry: 0deg; --gx: 50%; --gy: 0%;
+.card { --cc: color-mix(in srgb, hsl(var(--ch) var(--cs) var(--al)) 62%, var(--accent)); --rx: 0deg; --ry: 0deg; --sc: 1; --gx: 50%; --gy: 0%;
   position: relative; flex: 1; display: flex; flex-direction: column; align-items: center; gap: 1.1rem; min-height: 360px; padding: clamp(1.5rem, 3.5vw, 2.2rem); text-align: center; overflow: hidden;
   border: 1px solid var(--line); border-radius: var(--r-lg); box-shadow: var(--shadow), inset 0 1px 0 var(--hi);
-  background: radial-gradient(120% 90% at 0% 0%, color-mix(in srgb, var(--cc) 17%, transparent), transparent 62%), var(--glass);
+  background: radial-gradient(120% 90% at 0% 0%, color-mix(in srgb, var(--cc) 17%, transparent), transparent 62%), var(--solid);
  
-  transform: rotateX(var(--rx)) rotateY(var(--ry)); transition: transform .5s var(--ease), border-color var(--t-med); }
-.card.live { transition: transform .12s linear, border-color var(--t-med); }
-.card::before { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity var(--t-med); background: radial-gradient(320px circle at var(--gx) var(--gy), color-mix(in srgb, var(--cc) 26%, transparent), transparent 65%); }
+  transform: rotateX(var(--rx)) rotateY(var(--ry)) scale(var(--sc)); touch-action: pan-y; -webkit-tap-highlight-color: transparent; transition: transform .5s var(--ease), border-color var(--t-med); }
+.card.live { --sc: 1.015; transition: transform .12s linear, border-color var(--t-med); }
+.card.press { --sc: .985; }
+.card.live::before, .card.live::after { opacity: 1; }
+.card::before { content: ""; position: absolute; left: 0; top: 0; width: 380px; height: 380px; margin: -190px 0 0 -190px; pointer-events: none; opacity: 0; transition: opacity var(--t-med); background: radial-gradient(closest-side, color-mix(in srgb, var(--cc) 30%, transparent), transparent); transform: translate3d(var(--tx, 260px), var(--ty, 40px), 0); }
 .card::after { content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 1.5px; pointer-events: none; opacity: 0; transition: opacity var(--t-med);
   background: conic-gradient(from var(--ang, 0deg), transparent 0 52%, var(--cc) 82%, transparent 100%);
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0); }
-@media (hover: hover) { .card:hover::before, .card:hover::after { opacity: 1; } .card:hover::after { animation: spin 3.2s linear infinite; } }
+@media (hover: hover) and (pointer: fine) { .card:hover::before, .card:hover::after { opacity: 1; } .card:hover::after, .card.live::after { animation: spin 3.2s linear infinite; } }
+@media (hover: none) { .spot { display: none; } }
 .card > * { position: relative; }
 .card-top { display: flex; flex-direction: column; align-items: center; gap: 1rem; }
 .icon { display: grid; place-items: center; width: 68px; height: 68px; border-radius: 20px; color: var(--cc); background: color-mix(in srgb, var(--cc) 14%, transparent); border: 1px solid color-mix(in srgb, var(--cc) 30%, transparent); box-shadow: inset 0 1px 0 var(--hi); transform: translateZ(30px); }
@@ -207,7 +224,7 @@ footer .brand { font-size: .92rem; color: var(--text); }
 @keyframes pulse { 50% { box-shadow: 0 0 0 7px transparent; } }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
-  .js .rv { opacity: 1; transform: none; filter: none; } .hero { transform: none !important; opacity: 1 !important; } .statement h2 .w { opacity: 1; transform: none; } .cue, .bar, .mq, .spot { display: none; }
+  .js .rv { opacity: 1; transform: none; filter: none; } .hero { transform: none !important; opacity: 1 !important; } .statement h2 .w { opacity: 1; transform: none; } .cue, .bar, .mq, .spot, .bgcs { display: none; }
 }
 @media (max-width: 520px) {
   .wrap { width: calc(100% - 1.5rem); } .nav-in { padding-left: .85rem; }
@@ -218,7 +235,7 @@ footer .brand { font-size: .92rem; color: var(--text); }
 </head>
 <body>
 <div class="bar" aria-hidden="true"></div>
-<div class="atmo" aria-hidden="true"><i></i><i></i><i></i></div>
+<div class="atmo" aria-hidden="true"><i></i><i></i><i></i><div class="bgcs" id="bgcs"><div class="bgc"></div><div class="bgc"></div><div class="bgc"></div></div></div>
 <div class="spot" aria-hidden="true"></div>
 
 <header class="nav" id="nav">
@@ -231,9 +248,9 @@ footer .brand { font-size: .92rem; color: var(--text); }
       <div class="ctrls">
         <button class="ibtn" id="themeBtn" aria-haspopup="true" aria-expanded="false" aria-controls="themeMenu" aria-label="Choose appearance">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 3.5v17"/><path d="M12 3.5a8.5 8.5 0 0 1 0 17z" fill="currentColor" stroke="none" opacity=".55"/></svg>
-          <span class="lbl" id="themeLbl">AMOLED</span>
+          <span class="lbl" id="themeLbl">Light</span>
         </button>
-        <button class="ibtn" id="palBtn" aria-haspopup="true" aria-expanded="false" aria-controls="palMenu" aria-label="Choose color palette"><span class="dot" aria-hidden="true"></span><span class="lbl" id="palLbl">Rose</span></button>
+        <button class="ibtn" id="palBtn" aria-haspopup="true" aria-expanded="false" aria-controls="palMenu" aria-label="Choose color palette"><span class="dot" aria-hidden="true"></span><span class="lbl" id="palLbl">Ocean</span></button>
         <button class="ibtn" id="toggleBtn" aria-label="Switch between light and dark"><svg id="toggleIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"></svg></button>
         <div class="menu" id="themeMenu" role="menu" aria-label="Appearance" hidden></div>
         <div class="menu" id="palMenu" role="menu" aria-label="Color palette" hidden></div>
@@ -245,17 +262,14 @@ footer .brand { font-size: .92rem; color: var(--text); }
 <main>
   <div class="hero-pin" id="heroPin"><section class="hero" id="hero">
     <div class="wrap">
-      <div class="hero-art" aria-hidden="true">
-        <svg viewBox="0 0 1000 240" fill="none" stroke-linecap="round">
-          <defs><clipPath id="clipX"><rect x="0" y="44" width="72" height="34"/></clipPath></defs>
-          <g id="chL" class="ch"></g><g id="chR" class="ch"></g>
-          <circle id="shock" class="shock" cx="506" cy="84" r="0"/>
-          <g id="sparks" transform="translate(506 84)"></g>
-          <g id="lkA"><rect class="la" x="-60" y="-60" width="120" height="120" rx="40"/></g>
-          <g id="lkB"><rect class="gap bd" pathLength="100" x="-60" y="-60" width="120" height="120" rx="40"/><rect class="lb bd" pathLength="100" x="-60" y="-60" width="120" height="120" rx="40"/></g>
-          <g id="lkA2" clip-path="url(#clipX)"><rect class="gap" x="-60" y="-60" width="120" height="120" rx="40"/><rect class="la" x="-60" y="-60" width="120" height="120" rx="40"/></g>
-        </svg>
-      </div>
+      <div class="hero-art" aria-hidden="true"><div class="stage">
+        <div class="ch" id="chL"></div><div class="ch" id="chR"></div>
+        <div class="ring" id="shock" style="left:506px;top:84px"></div>
+        <div id="sparks" style="left:506px;top:84px"></div>
+        <div class="ml" id="lkA"><svg viewBox="-66 -66 132 132" fill="none" stroke-linecap="round"><rect class="la" x="-60" y="-60" width="120" height="120" rx="40"/></svg></div>
+        <div class="ml" id="lkB"><svg viewBox="-66 -66 132 132" fill="none" stroke-linecap="round"><rect class="gap bd" pathLength="100" x="-60" y="-60" width="120" height="120" rx="40"/><rect class="lb bd" pathLength="100" x="-60" y="-60" width="120" height="120" rx="40"/></svg></div>
+        <div class="ml" id="lkA2"><svg viewBox="-66 -66 132 132" fill="none" stroke-linecap="round"><rect class="gap" x="-60" y="-60" width="120" height="120" rx="40"/><rect class="la" x="-60" y="-60" width="120" height="120" rx="40"/></svg></div>
+      </div></div>
       <span class="pill"><i aria-hidden="true"></i>Independent, ad-free, no tracking</span>
       <h1><span class="ln"><span>Your tools.</span></span><span class="ln"><span>Your rules.</span></span></h1>
       <p class="lede">Thoughtful tools, no unnecessary noise.</p>
@@ -350,8 +364,8 @@ const save = (k, v) => { try { localStorage.setItem(k, v); } catch (e) {} };
 const resolved = () => theme === "system" ? (mq.matches ? "light" : "dark") : theme;
 
 function applyAppearance() {
-  if (!THEMES.some(t => t.id === theme)) theme = "amoled";
-  if (!PALETTES.some(p => p[0] === palette)) palette = "rose";
+  if (!THEMES.some(t => t.id === theme)) theme = "light";
+  if (!PALETTES.some(p => p[0] === palette)) palette = "ocean";
   const mode = resolved();
   root.dataset.theme = theme; root.dataset.mode = mode; root.dataset.palette = palette;
   document.querySelector('meta[name="theme-color"]').setAttribute("content", THEME_COLORS[mode]);
@@ -416,7 +430,7 @@ document.addEventListener("click", e => {
 
 /* ---------- Scroll + pointer: one rAF loop, transforms only ---------- */
 const nav = document.getElementById("nav"), hero = document.getElementById("hero"), bar = document.querySelector(".bar"),
-  heroSvg = document.querySelector(".hero-art svg"), blobs = Array.from(document.querySelectorAll(".atmo i")), spot = document.querySelector(".spot"),
+  blobs = Array.from(document.querySelectorAll(".atmo i")), spot = document.querySelector(".spot"),
   mqA = document.getElementById("mqa"), mqB = document.getElementById("mqb"), stEl = document.getElementById("statement");
 const words = (() => {
   const t = stEl.textContent.trim(); stEl.setAttribute("aria-label", t);
@@ -424,8 +438,9 @@ const words = (() => {
   return Array.from(stEl.querySelectorAll(".w"));
 })();
 const clamp = (v, a, b) => Math.min(b, Math.max(a, v)), sm = t => t * t * (3 - 2 * t);
-const scenes = [];
-let pinH = 1, lastHp = -1, broke = false, vh = innerHeight, docMax = 1, stTop = 0, lastY = 0, lit = -1, running = false, hpS = 0;
+const scenes = [], bgcs = document.getElementById("bgcs"), bgc = Array.from(document.querySelectorAll(".bgc")), bgSpeed = [.55, -.8, .4];
+function pulse(p) { const n = performance.now(); if (n - lastPulse < 90) return; lastPulse = n; haptic(p); }
+let bgOp = 0, lastBg = -1, lastSt = 0, lastPulse = 0, pinH = 1, lastHp = -1, broke = false, vh = innerHeight, docMax = 1, stTop = 0, lastY = 0, lit = -1, running = false, hpS = 0;
 const tgt = { x: 0, y: 0, mx: -999, my: -999 }, cur = { x: 0, y: 0 };
 
 /* 3D objects built from plain CSS faces (no images, no libraries) */
@@ -433,9 +448,11 @@ function buildNotebook(h) {
   h.innerHTML = '<div class="nb"><div class="f fr">' + ICONS.notes + '<i style="top:55%"></i><i style="top:62%;right:84px"></i><b></b></div><div class="f bk"></div><div class="f sp"></div><div class="f pg"></div><div class="f tp"></div><div class="f bt"></div></div>';
 }
 function buildDumbbell(h) {
+  const lo = matchMedia("(pointer: coarse)").matches;
   const root = document.createElement("div"); root.className = "db";
   const metal = "#a9afba", plate = "var(--cc)", plate2 = "color-mix(in srgb, var(--cc) 55%, #fff)";
   function cyl(cx, len, r, K, base) {
+    if (lo) K = Math.max(6, Math.round(K * .6));
     const side = 2 * r * Math.sin(Math.PI / K) + 1.2, ap = r * Math.cos(Math.PI / K);
     for (let k = 0; k < K; k++) {
       const a = k * 360 / K, pct = Math.round(38 + 52 * (.5 + .5 * Math.cos((a - 55) * Math.PI / 180))), e = document.createElement("div");
@@ -470,54 +487,60 @@ function setupMarquee() {
   const mq = document.querySelector(".mq");
   if ("IntersectionObserver" in window) new IntersectionObserver(es => es.forEach(e => mq.classList.toggle("paused", !e.isIntersecting))).observe(mq);
 }
-/* Hero chains: built once, then driven by scroll progress hp (0 → 1) */
-const NS = "http://www.w3.org/2000/svg", NL = 16, chains = [], sparkEls = [];
+/* Hero chains: HTML layers moved with transform/opacity only (no repaint while scrolling) */
+const NL = 16, chains = [], sparkEls = [];
 const seed = k => { const v = Math.sin(k * 127.1 + 311.7) * 43758.5453; return v - Math.floor(v); };
-let gA, gA2, gB, ringEl, bdEls;
+let gA, gA2, gB, ringEl, bdEls, artEl, lastKey = "", lastOpen = -1, lastSp = -1;
+const at = (x, y, a) => "translate3d(" + x.toFixed(1) + "px," + y.toFixed(1) + "px,0) rotate(" + a.toFixed(1) + "deg)";
 function buildHero() {
   gA = document.getElementById("lkA"); gA2 = document.getElementById("lkA2"); gB = document.getElementById("lkB");
-  ringEl = document.getElementById("shock"); bdEls = Array.from(document.querySelectorAll(".bd"));
+  ringEl = document.getElementById("shock"); bdEls = Array.from(document.querySelectorAll(".bd")); artEl = document.querySelector(".hero-art");
   [["chL", -1, 402, 108, -60], ["chR", 1, 598, 132, 1060]].forEach((c, ci) => {
     const g = document.getElementById(c[0]), links = [];
     for (let k = 0; k < NL; k++) {
-      const face = k % 2 === 0, l = document.createElementNS(NS, "g"), r = document.createElementNS(NS, "rect");
-      r.setAttribute("x", -22); r.setAttribute("width", 44); r.setAttribute("y", face ? -12 : -4.5); r.setAttribute("height", face ? 24 : 9); r.setAttribute("rx", face ? 12 : 4.5);
-      l.appendChild(r); g.appendChild(l);
-      links.push({ g: l, jy: (seed(k + ci * 40) * 2 - 1) * 70, jr: (seed(k + ci * 40 + 9) * 2 - 1) * 190 });
+      const l = document.createElement("div"); l.className = "cl " + (k % 2 ? "e" : "f"); g.appendChild(l);
+      links.push({ l, jy: (seed(k + ci * 40) * 2 - 1) * 70, jr: (seed(k + ci * 40 + 9) * 2 - 1) * 190 });
     }
     chains.push({ g, sd: c[1], ex: c[2], y0: c[3], xf: c[4], links });
   });
   const sp = document.getElementById("sparks");
-  for (let i = 0; i < 10; i++) {
-    const ln = document.createElementNS(NS, "line"); ln.setAttribute("x2", 12); sp.appendChild(ln); sparkEls.push([ln, i * 36 + (seed(i) * 16 - 8)]);
-  }
+  for (let i = 0; i < 10; i++) { const d = document.createElement("div"); d.className = "sp"; sp.appendChild(d); sparkEls.push([d, i * 36 + (seed(i) * 16 - 8)]); }
   updateHero(0);
 }
 function updateHero(hp) {
   const t = sm(clamp(hp / .36, 0, 1)), open = clamp((hp - .36) / .08, 0, 1), b = clamp((hp - .44) / .32, 0, 1), eb = 1 - Math.pow(1 - b, 3);
-  const pull = 16 * t, fly = 210 * eb, fade = (1 - sm(clamp((eb - .35) / .65, 0, 1))).toFixed(3);
-  const ta = "translate(" + (462 - pull - fly).toFixed(1) + " " + (108 - 26 * eb).toFixed(1) + ") rotate(" + (-34 * eb).toFixed(1) + ")";
-  gA.setAttribute("transform", ta); gA2.setAttribute("transform", ta);
-  gB.setAttribute("transform", "translate(" + (538 + pull + fly).toFixed(1) + " " + (132 + 26 * eb).toFixed(1) + ") rotate(" + (34 * eb).toFixed(1) + ")");
-  [gA, gA2, gB].forEach(g => g.setAttribute("opacity", fade));
-  const dash = (100 - 14 * open).toFixed(1) + " " + (14 * open + .01).toFixed(2);
-  bdEls.forEach(r => { r.style.strokeDasharray = dash; });
-  const sag = 30 * (1 - t);
-  chains.forEach(c => {
-    const x0 = c.ex + c.sd * pull, dX = c.xf - x0;
-    c.g.setAttribute("opacity", ((.6 + .4 * t) * fade).toFixed(3));
-    c.links.forEach((l, k) => {
-      const u = k / (NL - 1);
-      let x = x0 + dX * u, y = c.y0 + sag * Math.sin(Math.PI * u), ang = Math.atan(sag * Math.PI * Math.cos(Math.PI * u) / dX) * 57.2958;
-      if (eb > 0) { x += c.sd * eb * (70 + 230 * (1 - u)); y += eb * eb * l.jy; ang += eb * l.jr; }
-      l.g.setAttribute("transform", "translate(" + x.toFixed(1) + " " + y.toFixed(1) + ") rotate(" + ang.toFixed(1) + ")");
-      l.g.setAttribute("opacity", clamp(Math.min(x, 1000 - x) / 170, 0, 1).toFixed(2));
+  const key = t.toFixed(3) + "|" + eb.toFixed(3);
+  if (key !== lastKey) {
+    const first = lastKey === ""; lastKey = key;
+    const pull = 16 * t, fly = 210 * eb, fade = (1 - sm(clamp((eb - .35) / .65, 0, 1))).toFixed(3), sag = 30 * (1 - t);
+    gA.style.transform = at(462 - pull - fly, 108 - 26 * eb, -34 * eb); gA2.style.transform = gA.style.transform;
+    gB.style.transform = at(538 + pull + fly, 132 + 26 * eb, 34 * eb);
+    if (eb > 0 || first) { gA.style.opacity = gA2.style.opacity = gB.style.opacity = fade; }
+    chains.forEach(c => {
+      const x0 = c.ex + c.sd * pull, dX = c.xf - x0;
+      if (eb > 0 || first) c.g.style.opacity = ((.6 + .4 * t) * fade).toFixed(3);
+      c.links.forEach((l, k) => {
+        const u = k / (NL - 1);
+        let x = x0 + dX * u, y = c.y0 + sag * Math.sin(Math.PI * u), ang = Math.atan(sag * Math.PI * Math.cos(Math.PI * u) / dX) * 57.2958;
+        if (eb > 0) { x += c.sd * eb * (70 + 230 * (1 - u)); y += eb * eb * l.jy; ang += eb * l.jr; }
+        l.l.style.transform = at(x, y, ang);
+        if (eb > 0 || first) l.l.style.opacity = clamp(Math.min(x, 1000 - x) / 170, 0, 1).toFixed(2);
+      });
     });
-  });
-  const sp = clamp((hp - .36) / .22, 0, 1), so = sp > 0 && sp < 1 ? Math.sin(Math.PI * sp) : 0;
-  sparkEls.forEach(a => { a[0].setAttribute("transform", "rotate(" + a[1].toFixed(0) + ") translate(" + (8 + sp * 46).toFixed(1) + " 0)"); a[0].setAttribute("opacity", so.toFixed(2)); });
-  ringEl.setAttribute("r", (sp * 80).toFixed(1)); ringEl.style.opacity = (so * .5).toFixed(2);
+  }
+  if (open !== lastOpen) {
+    lastOpen = open; const dash = (100 - 14 * open).toFixed(1) + " " + (14 * open + .01).toFixed(2);
+    bdEls.forEach(r => { r.style.strokeDasharray = dash; });
+  }
+  const sp = clamp((hp - .36) / .22, 0, 1), spk = sp.toFixed(3);
+  if (spk !== lastSp) {
+    lastSp = spk; const so = sp > 0 && sp < 1 ? Math.sin(Math.PI * sp) : 0;
+    sparkEls.forEach(a => { a[0].style.transform = "rotate(" + a[1].toFixed(0) + "deg) translate3d(" + (8 + sp * 46).toFixed(1) + "px,0,0)"; a[0].style.opacity = so.toFixed(2); });
+    ringEl.style.transform = "scale(" + Math.max(.01, sp).toFixed(3) + ")"; ringEl.style.opacity = (so * .5).toFixed(2);
+  }
   if (hp > .37 && !broke) { broke = true; haptic([24, 30, 70]); } else if (hp < .3) broke = false;
+  const st = Math.floor(t * 6);
+  if (st !== lastSt) { if (st > lastSt && hp < .37) pulse(4 + st * 2); lastSt = st; }
 }
 function syncStatic() { root.classList.toggle("static", reduce.matches); }
 (reduce.addEventListener ? reduce.addEventListener.bind(reduce, "change") : reduce.addListener.bind(reduce))(() => { syncStatic(); measure(); request(); });
@@ -525,6 +548,9 @@ function syncStatic() { root.classList.toggle("static", reduce.matches); }
 function measure() {
   vh = innerHeight; pinH = document.getElementById("heroPin").offsetHeight; docMax = Math.max(1, document.documentElement.scrollHeight - vh);
   stTop = stEl.getBoundingClientRect().top + scrollY;
+  if (artEl) artEl.style.setProperty("--s", ((innerWidth < 700 ? 1.6 : 1) * artEl.clientWidth / 1000).toFixed(4));
+  const spd = innerWidth < 700 ? 26 : 16;
+  [mqA, mqB].forEach((r, i) => r.style.setProperty("--mqd", ((r.firstElementChild.offsetWidth || 500) / (spd * (i ? .9 : 1))).toFixed(1) + "s"));
   scenes.forEach(s => {
     s.top = s.el.getBoundingClientRect().top + scrollY; s.h = s.el.offsetHeight;
     s.k = Math.min(1, innerWidth * .88 / (s.kind === "notebook" ? 300 : 440), vh * .55 / (s.kind === "notebook" ? 340 : 300));
@@ -545,21 +571,25 @@ function render() {
   if (y < pinH) {
     const tp = clamp(y / Math.max(1, pinH - vh), 0, 1);
     if (Math.abs(tp - hpS) > .0006) { hpS += (tp - hpS) * .2; need = true; } else hpS = tp;
-    const hp = hpS;
+    const hp = hpS; bgOp = clamp((hp - .45) / .4, 0, 1);
     hero.style.opacity = (1 - sm(clamp((hp - .55) / .45, 0, 1))).toFixed(3);
     if (hp !== lastHp) { lastHp = hp; updateHero(hp); }
-    heroSvg.style.transform = "translate3d(" + (cur.x * 10).toFixed(1) + "px," + (cur.y * 6).toFixed(1) + "px,0)";
   }
+  if (y >= pinH) bgOp = 1;
+  if (bgOp !== lastBg) { lastBg = bgOp; bgcs.style.opacity = bgOp.toFixed(3); }
+  if (bgOp > 0) bgc.forEach((r, i) => { r.style.transform = "translate3d(" + ((y * bgSpeed[i]) % 60).toFixed(1) + "px,0,0)"; });
   blobs[0].style.transform = "translate3d(0," + (y * -.1).toFixed(1) + "px,0)";
   blobs[1].style.transform = "translate3d(0," + (y * .08).toFixed(1) + "px,0)";
   blobs[2].style.transform = "translate3d(" + (y * -.05).toFixed(1) + "px,0,0)";
   /* scenes: object spins with scroll, then the card takes its place */
   for (const s of scenes) {
     const range = Math.max(1, s.h - vh), p = clamp((y - s.top) / range, 0, 1), e = clamp((y - s.top + vh * .6) / (range + vh * .6), 0, 1);
-    if (y < s.top - vh * 1.4 || y > s.top + s.h + vh * .4) { if (s.done === p) continue; s.sp = p; s.se = e; s.done = p; }
-    else { s.done = null; s.sp += (p - s.sp) * .16; s.se += (e - s.se) * .16; if (Math.abs(p - s.sp) > .0007 || Math.abs(e - s.se) > .0007) need = true; }
+    if (y < s.top - vh * 1.4 || y > s.top + s.h + vh * .4) { if (!s.hid) { s.hid = true; s.obj.style.display = "none"; } if (s.done === p) continue; s.sp = p; s.se = e; s.done = p; }
+    else { if (s.hid) { s.hid = false; s.obj.style.display = ""; } s.done = null; s.sp += (p - s.sp) * .16; s.se += (e - s.se) * .16; if (Math.abs(p - s.sp) > .0007 || Math.abs(e - s.se) > .0007) need = true; }
     const enter = sm(clamp(s.se / .14, 0, 1)), out = sm(clamp((s.sp - .42) / .3, 0, 1)), card = sm(clamp((s.sp - .56) / .24, 0, 1)), a = s.se;
-    const op = (enter * (1 - out)).toFixed(3);
+    const op = (enter * (1 - out)).toFixed(3), rs = Math.floor(a * 8);
+    if (rs !== s.rs) { if (+op > .3 && s.rs !== undefined) pulse(5); s.rs = rs; }
+    if (card > .7 && !s.shown) { s.shown = true; pulse([14, 30, 14]); } else if (card < .3) s.shown = false;
     if (op !== s.vo) { s.vo = op; s.obj.style.opacity = op; s.obj.style.visibility = +op > .005 ? "visible" : "hidden"; }
     if (+op > .005) {
       s.obj.style.transform = "translate3d(0," + ((1 - enter) * 70 - out * 18).toFixed(1) + "px,0)";
@@ -596,18 +626,23 @@ const io = "IntersectionObserver" in window ? new IntersectionObserver(es => es.
 }), { threshold: .12 }) : null;
 function bindCards() {
   document.querySelectorAll(".rv").forEach(el => io ? io.observe(el) : el.classList.add("in"));
-  if (!fine.matches || reduce.matches) return;
+  if (reduce.matches) return;
   document.querySelectorAll(".card").forEach(c => {
-    c.addEventListener("pointermove", e => {
-      c._e = e; if (c._f) return;
-      c._f = requestAnimationFrame(() => {
-        c._f = 0; const r = c.getBoundingClientRect(), x = (c._e.clientX - r.left) / r.width, y = (c._e.clientY - r.top) / r.height;
-        c.classList.add("live");
-        c.style.setProperty("--ry", ((x - .5) * 9).toFixed(2) + "deg"); c.style.setProperty("--rx", ((.5 - y) * 7).toFixed(2) + "deg");
-        c.style.setProperty("--gx", (x * 100).toFixed(1) + "%"); c.style.setProperty("--gy", (y * 100).toFixed(1) + "%");
-      });
-    });
-    c.addEventListener("pointerleave", () => { c.classList.remove("live"); c.style.setProperty("--rx", "0deg"); c.style.setProperty("--ry", "0deg"); });
+    const aim = () => {
+      c._f = 0; const e = c._e, n = performance.now();
+      if (!c._r || n - c._rt > 400) { c._r = c.getBoundingClientRect(); c._rt = n; }
+      const r = c._r, x = clamp((e.clientX - r.left) / r.width, 0, 1), y = clamp((e.clientY - r.top) / r.height, 0, 1);
+      c.classList.add("live");
+      c.style.setProperty("--ry", ((x - .5) * 14).toFixed(1) + "deg"); c.style.setProperty("--rx", ((.5 - y) * 11).toFixed(1) + "deg");
+      c.style.setProperty("--tx", (x * r.width).toFixed(0) + "px"); c.style.setProperty("--ty", (y * r.height).toFixed(0) + "px");
+    };
+    const track = e => { c._e = e; if (!c._f) c._f = requestAnimationFrame(aim); };
+    const rest = () => { if (c._f) { cancelAnimationFrame(c._f); c._f = 0; } c._r = null; c.classList.remove("live", "press"); c.style.setProperty("--rx", "0deg"); c.style.setProperty("--ry", "0deg"); };
+    c.addEventListener("pointermove", track);
+    c.addEventListener("pointerdown", e => { c._r = null; c.classList.add("press"); track(e); if (e.pointerType === "touch") haptic(6); });
+    c.addEventListener("pointerup", e => { c.classList.remove("press"); if (e.pointerType !== "mouse") setTimeout(rest, 180); });
+    c.addEventListener("pointerleave", rest);
+    c.addEventListener("pointercancel", rest);
   });
   document.querySelectorAll(".open").forEach(b => {
     b.addEventListener("pointermove", e => { const r = b.getBoundingClientRect(); b.style.transform = "translate(" + ((e.clientX - r.left - r.width / 2) * .18).toFixed(1) + "px," + ((e.clientY - r.top - r.height / 2) * .28).toFixed(1) + "px)"; });
