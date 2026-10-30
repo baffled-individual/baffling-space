@@ -14,6 +14,7 @@
   try { t = localStorage.getItem("bs-theme") || t; p = localStorage.getItem("bs-palette") || p; } catch (e) {}
   var mode = t === "system" ? (matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark") : t;
   r.dataset.theme = t; r.dataset.mode = mode; r.dataset.palette = p; r.classList.add("js");
+  var ua = navigator.userAgent; if (/iP(hone|ad|od)/.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1)) r.classList.add("ios");
 })();
 </script>
 <style>
@@ -99,7 +100,6 @@ a { color: inherit; }
 .hero-art .cl.e { width: 44px; height: 9px; margin: -4.5px 0 0 -22px; border-radius: 5px; }
 .hero-art .ml { width: 132px; height: 132px; margin: -66px 0 0 -66px; }
 .hero-art .ml svg { display: block; width: 100%; height: 100%; }
-.hero-art #lkA2 { clip-path: inset(110px 0 0 66px); }
 .hero-art .sp { position: absolute; left: 0; top: 0; width: 12px; height: 3px; margin-top: -1.5px; border-radius: 2px; background: var(--accent); transform-origin: 0 50%; opacity: 0; }
 .hero-art .ring { width: 160px; height: 160px; margin: -80px 0 0 -80px; border: 2px solid var(--accent); border-radius: 50%; opacity: 0; }
 .hero-art { contain: layout paint; position: relative; width: min(780px, 100%); aspect-ratio: 1000 / 240; margin: 0 auto .6rem; overflow: hidden; pointer-events: none; animation: fade 1.2s .1s both; }
@@ -127,7 +127,7 @@ h1 .ln:first-child span { background: linear-gradient(100deg, var(--text) 30%, v
 .mq-row { display: flex; width: max-content; will-change: transform; animation: mq var(--mqd, 46s) linear infinite; }
 .mq-row.b { animation-direction: reverse; }
 .mq.paused .mq-row { animation-play-state: paused; }
-@keyframes mq { to { transform: translate3d(-16.6667%, 0, 0); } }
+@keyframes mq { to { transform: translate3d(calc(-100% / var(--mqn, 6)), 0, 0); } }
 .mq-row span { display: inline-flex; align-items: center; gap: 1.6rem; padding-right: 1.6rem; font-size: clamp(3rem, 9vw, 6.5rem); font-weight: 300; letter-spacing: -.04em; line-height: 1.08; white-space: nowrap; color: transparent; -webkit-text-stroke: 1px color-mix(in srgb, var(--muted) 75%, transparent); }
 .mq-row.b span { -webkit-text-stroke: 0; color: color-mix(in srgb, var(--text) 8%, transparent); }
 .mq-row i { width: .26em; height: .26em; border-radius: 28%; flex: none; rotate: 45deg; border: 1.5px solid var(--accent); background: var(--accent-soft); }
@@ -174,18 +174,33 @@ h2 { margin: 0; font-weight: 300; font-size: clamp(2rem, 6vw, 3.4rem); letter-sp
 .stick { display: grid; place-items: center; padding: 1rem 0; }
 .obj, .cw { grid-area: 1 / 1; }
 .cw { width: min(100%, 520px); display: flex; perspective: 1000px; }
-.js:not(.static) .scene[data-scene] { height: 210vh; height: 210svh; }
+.js:not(.static) .scene[data-scene] { height: 270vh; height: 270svh; }
 .js:not(.static) .scene[data-scene] .stick { position: sticky; top: 0; height: 100vh; height: 100svh; padding: 0; }
 .js:not(.static) .scene[data-scene] .cw { opacity: 0; visibility: hidden; pointer-events: none; will-change: transform, opacity; }
-.obj { position: relative; width: 100%; height: 100%; display: grid; place-items: center; perspective: 1100px; pointer-events: none; }
-.obj::before { content: ""; position: absolute; left: 50%; top: 50%; width: min(680px, 130vw); aspect-ratio: 1; translate: -50% -50%; background: radial-gradient(closest-side, color-mix(in srgb, var(--cc) 28%, transparent), transparent); }
+.obj { z-index: 2; position: relative; width: 100%; height: 100%; display: grid; place-items: center; perspective: 1100px; pointer-events: none; }
+.obj::before { opacity: var(--gl, 1); content: ""; position: absolute; left: 50%; top: 50%; width: min(680px, 130vw); aspect-ratio: 1; translate: -50% -50%; background: radial-gradient(closest-side, color-mix(in srgb, var(--cc) 28%, transparent), transparent); }
 .o3 { position: relative; width: 0; height: 0; transform-style: preserve-3d; will-change: transform; }
-.cap { position: absolute; left: 0; right: 0; bottom: 11%; text-align: center; font-size: .78rem; letter-spacing: .32em; text-transform: uppercase; color: var(--muted); }
+.cap { opacity: var(--gl, 1); position: absolute; left: 0; right: 0; bottom: 11%; text-align: center; font-size: .78rem; letter-spacing: .32em; text-transform: uppercase; color: var(--muted); }
 .static .obj { display: none; }
 .nb, .db { position: absolute; left: 0; top: 0; transform-style: preserve-3d; }
 .nb .f { position: absolute; backface-visibility: hidden; }
 .nb .fr, .nb .bk { width: 210px; height: 280px; left: -105px; top: -140px; border-radius: 4px 14px 14px 4px; background: linear-gradient(135deg, color-mix(in srgb, var(--cc) 58%, #181a1f), color-mix(in srgb, var(--cc) 26%, #08090b)); box-shadow: inset 0 0 0 1px rgba(255,255,255,.14), inset 8px 0 16px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.2); }
-.nb .fr { transform: translateZ(23px); } .nb .bk { transform: rotateY(180deg) translateZ(23px); }
+.nb .bk { transform: rotateY(180deg) translateZ(23px); }
+.nb .cv { position: absolute; left: -105px; top: -140px; width: 210px; height: 280px; transform-origin: 0 50%; transform-style: preserve-3d; transform: translateZ(23px); }
+.nb .cv .fr { left: 0; top: 0; transform: none; }
+.nb .cv .cb { left: 0; top: 0; width: 210px; height: 280px; transform: rotateY(180deg); border-radius: 14px 4px 4px 14px; background: linear-gradient(90deg, #d8d4ca, #efece5); box-shadow: inset 0 0 0 1px rgba(0,0,0,.08); }
+.nb .pp { width: 204px; height: 274px; left: -102px; top: -137px; transform: translateZ(21px); border-radius: 2px 8px 8px 2px; background: repeating-linear-gradient(0deg, transparent 0 25px, rgba(30,34,48,.09) 25px 26px), #f3f0e9; }
+.scene[data-scene="notebook"] .cw { transform-origin: 0 50%; }
+.scene[data-scene="notebook"] .obj { z-index: 0; }
+/* impact + page details inside the card */
+.card > .fx { position: absolute; inset: 0; pointer-events: none; }
+.card > .fx.cracks { width: 100%; height: 100%; }
+.cracks path { fill: none; stroke: color-mix(in srgb, var(--text) 62%, transparent); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 1; }
+.card > .fx.shards { inset: auto; left: 50%; top: 26%; width: 0; height: 0; }
+.shard { position: absolute; left: 0; top: 0; width: 9px; height: 5px; margin: -2.5px 0 0 -4.5px; border-radius: 1px; background: color-mix(in srgb, var(--text) 60%, transparent); opacity: 0; }
+.ring2 { position: absolute; left: 0; top: 0; width: 140px; height: 140px; margin: -70px 0 0 -70px; border: 2px solid color-mix(in srgb, var(--text) 40%, transparent); border-radius: 50%; opacity: 0; }
+.card > .fx.holes { inset: 0 auto 0 12px; width: 14px; background: radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--text) 24%, transparent) 4.5px, transparent 5.5px) 0 10px / 14px 36px repeat-y; }
+.static .fx.cracks, .static .fx.shards { display: none; }
 .nb .fr svg { position: absolute; left: 50%; top: 27%; width: 56px; height: 56px; translate: -50% -50%; color: color-mix(in srgb, var(--cc) 65%, #fff); opacity: .92; }
 .nb .fr i { position: absolute; left: 36px; right: 36px; height: 2px; background: rgba(255,255,255,.2); border-radius: 2px; }
 .nb .fr b { position: absolute; top: 0; bottom: 0; right: 34px; width: 9px; background: color-mix(in srgb, var(--cc) 38%, #000); box-shadow: 0 0 0 1px rgba(255,255,255,.08); }
@@ -209,6 +224,9 @@ footer .brand { font-size: .92rem; color: var(--text); }
 /* Scroll reveal */
 .js .rv { opacity: 0; transform: translateY(32px); transition: opacity .7s var(--ease), transform .7s var(--ease); transition-delay: var(--d, 0s); }
 .js .rv.in { opacity: 1; transform: none; }
+/* iOS Safari: fewer big layers (memory) and no continuous ambient drift */
+.ios .atmo i::before { animation: none; }
+.ios .atmo i:nth-child(3), .ios .bgc:nth-child(3) { display: none; }
 /* Update pop-up */
 .upd { position: fixed; left: 50%; bottom: max(1.2rem, env(safe-area-inset-bottom)); z-index: 60; translate: -50% 0; width: min(360px, calc(100% - 1.5rem)); display: flex; flex-direction: column; align-items: center; gap: .3rem; padding: 1.2rem 1.2rem 1rem; text-align: center; border: 1px solid var(--line); border-radius: 24px; background: var(--panel); box-shadow: var(--shadow), 0 0 0 1px color-mix(in srgb, var(--accent) 22%, transparent), inset 0 1px 0 var(--hi); animation: pop .6s var(--ease) both; }
 .upd b { font-weight: 600; font-size: 1.05rem; letter-spacing: -.01em; }
@@ -268,7 +286,7 @@ footer .brand { font-size: .92rem; color: var(--text); }
         <div id="sparks" style="left:506px;top:84px"></div>
         <div class="ml" id="lkA"><svg viewBox="-66 -66 132 132" fill="none" stroke-linecap="round"><rect class="la" x="-60" y="-60" width="120" height="120" rx="40"/></svg></div>
         <div class="ml" id="lkB"><svg viewBox="-66 -66 132 132" fill="none" stroke-linecap="round"><rect class="gap bd" pathLength="100" x="-60" y="-60" width="120" height="120" rx="40"/><rect class="lb bd" pathLength="100" x="-60" y="-60" width="120" height="120" rx="40"/></svg></div>
-        <div class="ml" id="lkA2"><svg viewBox="-66 -66 132 132" fill="none" stroke-linecap="round"><rect class="gap" x="-60" y="-60" width="120" height="120" rx="40"/><rect class="la" x="-60" y="-60" width="120" height="120" rx="40"/></svg></div>
+        <div class="ml" id="lkA2"><svg viewBox="-66 -66 132 132" fill="none" stroke-linecap="round"><defs><clipPath id="clipX"><rect x="0" y="44" width="72" height="34"/></clipPath></defs><g clip-path="url(#clipX)"><rect class="gap" x="-60" y="-60" width="120" height="120" rx="40"/><rect class="la" x="-60" y="-60" width="120" height="120" rx="40"/></g></svg></div>
       </div></div>
       <span class="pill"><i aria-hidden="true"></i>Independent, ad-free, no tracking</span>
       <h1><span class="ln"><span>Your tools.</span></span><span class="ln"><span>Your rules.</span></span></h1>
@@ -338,7 +356,7 @@ function renderApps() {
       ? '<a class="open" href="' + esc(a.url.trim()) + '" target="_blank" rel="noopener noreferrer" aria-label="Open ' + esc(a.name) + ' in a new tab"><span>Open app</span>' + ARROW + '</a>'
       : '<button class="open" type="button" aria-disabled="true" aria-describedby="hint' + i + '"><span>Open app</span>' + ARROW + '</button><span class="hint" id="hint' + i + '">Link not set yet. Add this app\'s URL in the config at the top of the script.</span>';
     return '<section class="scene' + (a.scene ? '' : ' plain') + '"' + (a.scene ? ' data-scene="' + a.scene + '"' : '') + ' style="--ch:' + a.hue + ';--cs:' + a.sat + '%"><div class="stick">' +
-      (a.scene ? '<div class="obj" aria-hidden="true"><div class="o3"></div><span class="cap">' + esc(a.name) + '</span></div>' : '') + '<div class="cw"><article class="card">' +
+      (a.scene ? '<div class="obj" aria-hidden="true"><div class="o3"></div><span class="cap">' + esc(a.name) + '</span></div>' : '') + '<div class="cw"><article class="card">' + (a.scene === "notebook" ? '<span class="fx holes"></span>' : '') +
       '<div class="card-top"><div class="icon" aria-hidden="true">' + ICONS[a.icon] + '</div><span class="status">' + (ok ? CHECK + 'Live' : RING + 'Link not set') + '</span></div>' +
       '<h3>' + esc(a.name) + '</h3><p>' + esc(a.description) + '</p>' +
       '<ul class="tags" aria-label="Categories">' + a.tags.map(t => '<li>' + esc(t) + '</li>').join("") + '</ul>' +
@@ -445,14 +463,14 @@ const tgt = { x: 0, y: 0, mx: -999, my: -999 }, cur = { x: 0, y: 0 };
 
 /* 3D objects built from plain CSS faces (no images, no libraries) */
 function buildNotebook(h) {
-  h.innerHTML = '<div class="nb"><div class="f fr">' + ICONS.notes + '<i style="top:55%"></i><i style="top:62%;right:84px"></i><b></b></div><div class="f bk"></div><div class="f sp"></div><div class="f pg"></div><div class="f tp"></div><div class="f bt"></div></div>';
+  h.innerHTML = '<div class="nb"><div class="cv"><div class="f fr">' + ICONS.notes + '<i style="top:55%"></i><i style="top:62%;right:84px"></i><b></b></div><div class="f cb"></div></div><div class="f bk"></div><div class="f pp"></div><div class="f sp"></div><div class="f pg"></div><div class="f tp"></div><div class="f bt"></div></div>';
 }
 function buildDumbbell(h) {
   const lo = matchMedia("(pointer: coarse)").matches;
   const root = document.createElement("div"); root.className = "db";
   const metal = "#a9afba", plate = "var(--cc)", plate2 = "color-mix(in srgb, var(--cc) 55%, #fff)";
   function cyl(cx, len, r, K, base) {
-    if (lo) K = Math.max(6, Math.round(K * .6));
+    if (lo) K = Math.max(6, Math.round(K * (document.documentElement.classList.contains("ios") ? .5 : .6)));
     const side = 2 * r * Math.sin(Math.PI / K) + 1.2, ap = r * Math.cos(Math.PI / K);
     for (let k = 0; k < K; k++) {
       const a = k * 360 / K, pct = Math.round(38 + 52 * (.5 + .5 * Math.cos((a - 55) * Math.PI / 180))), e = document.createElement("div");
@@ -474,16 +492,49 @@ function buildDumbbell(h) {
   });
   h.appendChild(root);
 }
+/* Crack lines + flying shards that live inside the card (drawn by scroll progress) */
+function makeCracks(card, sc) {
+  const svg = document.createElementNS(NS, "svg"); svg.setAttribute("class", "fx cracks"); svg.setAttribute("viewBox", "0 0 520 480"); svg.setAttribute("preserveAspectRatio", "xMidYMid slice");
+  sc.cr = [];
+  const add = (d, dl) => { const p = document.createElementNS(NS, "path"); p.setAttribute("d", d); p.setAttribute("pathLength", "1"); svg.appendChild(p); sc.cr.push({ p, d: dl }); };
+  for (let i = 0; i < 9; i++) {
+    let x = 260, y = 125, ang = i * 40 + seed(i + 3) * 24, d = "M260 125";
+    for (let j = 0; j < 6; j++) {
+      ang += (seed(i * 9 + j) - .5) * 38; const st = 34 + seed(i * 5 + j + 20) * 32, ca = ang * Math.PI / 180;
+      x += Math.cos(ca) * st; y += Math.sin(ca) * st; d += " L" + x.toFixed(0) + " " + y.toFixed(0);
+      if (j === 1 || j === 3) {
+        let bx = x, by = y, ba = ang + (seed(i * 7 + j) > .5 ? 1 : -1) * (30 + seed(i + j) * 22), bd = "M" + bx.toFixed(0) + " " + by.toFixed(0);
+        for (let q = 0; q < 3; q++) { ba += (seed(i * 3 + q + j) - .5) * 40; const r = ba * Math.PI / 180, l = 22 + seed(q + i) * 20; bx += Math.cos(r) * l; by += Math.sin(r) * l; bd += " L" + bx.toFixed(0) + " " + by.toFixed(0); }
+        add(bd, .25 + j * .1);
+      }
+    }
+    add(d, i % 3 * .06);
+  }
+  card.insertBefore(svg, card.firstChild);
+}
+function makeImpact(card, sc) {
+  makeCracks(card, sc);
+  const fx = document.createElement("div"); fx.className = "fx shards"; sc.sh = [];
+  for (let i = 0; i < 10; i++) { const e = document.createElement("div"); e.className = "shard"; fx.appendChild(e); sc.sh.push({ e, a: (i / 10) * 6.283 + seed(i + 50), d: 90 + seed(i + 70) * 150, r: (seed(i + 90) * 2 - 1) * 420 }); }
+  sc.ring = document.createElement("div"); sc.ring.className = "ring2"; fx.appendChild(sc.ring);
+  card.appendChild(fx);
+}
 function setupScenes() {
   document.querySelectorAll(".scene[data-scene]").forEach(el => {
     const kind = el.dataset.scene, o3 = el.querySelector(".o3");
     (kind === "notebook" ? buildNotebook : buildDumbbell)(o3);
-    scenes.push({ el, kind, o3, obj: el.querySelector(".obj"), cw: el.querySelector(".cw"), top: 0, h: 1, k: 1, sp: 0, se: 0 });
+    const sc = { el, kind, o3, obj: el.querySelector(".obj"), cw: el.querySelector(".cw"), cv: el.querySelector(".cv"), top: 0, h: 1, k: 1, ch: 400, kz: 1.5, dir: 1, sp: 0, se: 0 };
+    if (kind === "dumbbell") makeImpact(el.querySelector(".card"), sc);
+    scenes.push(sc);
   });
 }
 /* Marquee: constant-speed CSS animation (compositor thread); paused while off screen */
 function setupMarquee() {
-  [mqA, mqB].forEach((r, i) => { r.innerHTML = ('<span>' + (i ? "thoughtful tools" : "baffling space") + '<i></i></span>').repeat(6); });
+  [mqA, mqB].forEach((r, i) => {
+    const t = '<span>' + (i ? "thoughtful tools" : "baffling space") + '<i></i></span>';
+    r.innerHTML = t; const n = Math.ceil(Math.max(innerWidth, innerHeight, screen.width || 0) / (r.firstElementChild.offsetWidth || 500)) + 2;
+    r.innerHTML = t.repeat(n); r.style.setProperty("--mqn", n);
+  });
   const mq = document.querySelector(".mq");
   if ("IntersectionObserver" in window) new IntersectionObserver(es => es.forEach(e => mq.classList.toggle("paused", !e.isIntersecting))).observe(mq);
 }
@@ -521,6 +572,7 @@ function updateHero(hp) {
       if (eb > 0 || first) c.g.style.opacity = ((.6 + .4 * t) * fade).toFixed(3);
       c.links.forEach((l, k) => {
         const u = k / (NL - 1);
+        if (l.off) return;
         let x = x0 + dX * u, y = c.y0 + sag * Math.sin(Math.PI * u), ang = Math.atan(sag * Math.PI * Math.cos(Math.PI * u) / dX) * 57.2958;
         if (eb > 0) { x += c.sd * eb * (70 + 230 * (1 - u)); y += eb * eb * l.jy; ang += eb * l.jr; }
         l.l.style.transform = at(x, y, ang);
@@ -545,14 +597,68 @@ function updateHero(hp) {
 function syncStatic() { root.classList.toggle("static", reduce.matches); }
 (reduce.addEventListener ? reduce.addEventListener.bind(reduce, "change") : reduce.addListener.bind(reduce))(() => { syncStatic(); measure(); request(); });
 
+const NS = "http://www.w3.org/2000/svg";
+const seg = (p, a, b) => clamp((p - a) / (b - a), 0, 1), lerp = (a, b, t) => a + (b - a) * t;
+function setO(s, op, tf, gl) {
+  const g = (gl === undefined ? 1 : gl).toFixed(2);
+  if (g !== s.vg) { s.vg = g; s.obj.style.setProperty("--gl", g); }
+  const o = op.toFixed(3);
+  if (o !== s.vo) { s.vo = o; s.obj.style.opacity = o; s.obj.style.visibility = op > .005 ? "visible" : "hidden"; }
+  if (op > .005 && tf !== s.vt) { s.vt = tf; s.o3.style.transform = tf; }
+}
+function setC(s, op, tf) {
+  const c = op.toFixed(3);
+  if (c !== s.vc || tf !== s.vct) { s.vc = c; s.vct = tf; s.cw.style.opacity = c; s.cw.style.transform = tf; s.cw.style.visibility = op > .02 ? "visible" : "hidden"; s.cw.style.pointerEvents = op > .7 ? "auto" : "none"; }
+}
+/* Dumbbell: spins, lifts, drops on the card and cracks it, bounces off */
+function renderDumbbell(s, enter, P, a) {
+  const H = s.ch, yTop = -Math.min(vh * .36, H / 2 + 130), yHit = -H * .24;
+  const lift = sm(seg(P, .30, .44)), f = seg(P, .46, .60), g = seg(P, .60, .72), off = sm(seg(P, .70, .90));
+  let y = (1 - enter) * 70, x = 0;
+  if (P < .46) y += yTop * lift;
+  else if (P < .60) y = yTop + (yHit - yTop) * f * f;
+  else { y = yHit - 26 * Math.sin(Math.PI * g) + off * off * vh * .35; x = off * s.dir * innerWidth * .32; }
+  const sc = s.k * (.82 + .18 * enter) * (1 - .38 * lift), spin = a * 720, tg = 360 * Math.round(spin / 360), fl = sm(seg(P, .40, .58));
+  const ry = lerp(spin, tg, fl) + off * 140 * s.dir, rx = lerp(-16, -6, fl), rz = lerp(-14 + a * 28, -4, fl) + off * 70 * s.dir;
+  setO(s, enter * (1 - off), "translate3d(" + x.toFixed(1) + "px," + y.toFixed(1) + "px,0) scale(" + sc.toFixed(3) + ") rotateX(" + rx.toFixed(1) + "deg) rotateY(" + ry.toFixed(1) + "deg) rotateZ(" + rz.toFixed(1) + "deg)", 1 - lift);
+  const card = sm(seg(P, .32, .46)), sh = P > .60 ? 1 - seg(P, .60, .76) : 0, tilt = -1.1 * sm(seg(P, .60, .68));
+  setC(s, card, "translate3d(" + (Math.sin(P * 900) * 9 * sh).toFixed(1) + "px," + ((1 - card) * 30 + Math.cos(P * 780) * 6 * sh).toFixed(1) + "px,0) rotate(" + tilt.toFixed(2) + "deg) scale(" + (.94 + .06 * card).toFixed(3) + ")");
+  const c = sm(seg(P, .60, .72)).toFixed(2), hs = seg(P, .60, .86).toFixed(2);
+  if (c !== s.lc) { s.lc = c; s.cr.forEach(o => { o.p.style.strokeDashoffset = (1 - clamp((+c - o.d) / (1 - o.d), 0, 1)).toFixed(3); }); }
+  if (hs !== s.lh) {
+    s.lh = hs; const h = +hs, live = h > 0 && h < 1;
+    s.sh.forEach(o => { o.e.style.transform = "translate3d(" + (Math.cos(o.a) * o.d * h).toFixed(1) + "px," + (Math.sin(o.a) * o.d * h + h * h * 70).toFixed(1) + "px,0) rotate(" + (o.r * h).toFixed(0) + "deg)"; o.e.style.opacity = live ? (1 - h).toFixed(2) : 0; });
+    s.ring.style.transform = "scale(" + (.1 + h * 1.9).toFixed(2) + ")"; s.ring.style.opacity = live ? ((1 - h) * .6).toFixed(2) : 0;
+  }
+  if (P > .6 && !s.hit) { s.hit = true; pulse([40, 20, 60]); } else if (P < .5) s.hit = false;
+}
+/* Notebook: spins, faces you, the cover swings open, the page becomes the card */
+function renderNotebook(s, enter, P, a) {
+  const set = sm(seg(P, .26, .40)), open = sm(seg(P, .40, .60)), zoom = sm(seg(P, .56, .80)), card = sm(seg(P, .70, .86)), out = sm(seg(P, .80, .94));
+  const spin = -32 + a * 900, tg = 360 * Math.round(spin / 360);
+  const ry = lerp(spin, tg, set), rx = lerp(-14 + a * 12, -4, set), rz = lerp(Math.sin(a * 7) * 3, 0, set);
+  const sc = lerp(s.k * (.82 + .18 * enter) * (1 + .3 * set), s.kz, zoom), tx = 52 * sc * open * (1 - zoom);
+  setO(s, enter * (1 - out), "translate3d(" + tx.toFixed(1) + "px," + ((1 - enter) * 70).toFixed(1) + "px,0) scale(" + sc.toFixed(3) + ") rotateX(" + rx.toFixed(1) + "deg) rotateY(" + ry.toFixed(1) + "deg) rotateZ(" + rz.toFixed(1) + "deg)", 1 - zoom);
+  const cv = "translateZ(23px) rotateY(" + (-165 * open).toFixed(1) + "deg)";
+  if (cv !== s.vcv) { s.vcv = cv; s.cv.style.transform = cv; }
+  setC(s, card, "translate3d(0," + ((1 - card) * 16).toFixed(1) + "px,0) rotateY(" + (-(1 - card) * 28).toFixed(1) + "deg)");
+  if (open > .5 && !s.opened) { s.opened = true; pulse([10, 25, 10]); } else if (open < .3) s.opened = false;
+  if (card > .7 && !s.shown) { s.shown = true; pulse([14, 30, 14]); } else if (card < .3) s.shown = false;
+}
 function measure() {
   vh = innerHeight; pinH = document.getElementById("heroPin").offsetHeight; docMax = Math.max(1, document.documentElement.scrollHeight - vh);
   stTop = stEl.getBoundingClientRect().top + scrollY;
-  if (artEl) artEl.style.setProperty("--s", ((innerWidth < 700 ? 1.6 : 1) * artEl.clientWidth / 1000).toFixed(4));
+  if (artEl) {
+    const sc = (innerWidth < 700 ? 1.6 : 1) * artEl.clientWidth / 1000; artEl.style.setProperty("--s", sc.toFixed(4));
+    const half = artEl.clientWidth / (2 * sc) + 90;
+    chains.forEach(c => c.links.forEach((l, k) => { const off = Math.abs(c.ex + (c.xf - c.ex) * (k / (NL - 1)) - 500) > half; if (off !== l.off) { l.off = off; l.l.style.display = off ? "none" : ""; } }));
+    lastKey = "";
+  }
   const spd = innerWidth < 700 ? 26 : 16;
   [mqA, mqB].forEach((r, i) => r.style.setProperty("--mqd", ((r.firstElementChild.offsetWidth || 500) / (spd * (i ? .9 : 1))).toFixed(1) + "s"));
   scenes.forEach(s => {
     s.top = s.el.getBoundingClientRect().top + scrollY; s.h = s.el.offsetHeight;
+    s.ch = s.cw.offsetHeight || 400; s.kz = Math.min(3, Math.max(1, s.ch / 274));
     s.k = Math.min(1, innerWidth * .88 / (s.kind === "notebook" ? 300 : 440), vh * .55 / (s.kind === "notebook" ? 340 : 300));
   });
 }
@@ -563,7 +669,7 @@ function render() {
   bar.style.transform = "scaleX(" + Math.min(1, y / docMax).toFixed(4) + ")";
   nav.classList.toggle("solid", y > 40);
   if (y <= 160 || y < lastY - 3) nav.classList.remove("hide");
-  else if (y > lastY + 3 && !document.querySelector(".menu:not([hidden])")) nav.classList.add("hide");
+  else if (y > lastY + 3 && document.getElementById("themeMenu").hidden && document.getElementById("palMenu").hidden) nav.classList.add("hide");
   lastY = y;
   if (reduce.matches) { if (lit !== words.length) { words.forEach(w => w.classList.add("on")); lit = words.length; } return; }
   let need = false;
@@ -586,24 +692,9 @@ function render() {
     const range = Math.max(1, s.h - vh), p = clamp((y - s.top) / range, 0, 1), e = clamp((y - s.top + vh * .6) / (range + vh * .6), 0, 1);
     if (y < s.top - vh * 1.4 || y > s.top + s.h + vh * .4) { if (!s.hid) { s.hid = true; s.obj.style.display = "none"; } if (s.done === p) continue; s.sp = p; s.se = e; s.done = p; }
     else { if (s.hid) { s.hid = false; s.obj.style.display = ""; } s.done = null; s.sp += (p - s.sp) * .16; s.se += (e - s.se) * .16; if (Math.abs(p - s.sp) > .0007 || Math.abs(e - s.se) > .0007) need = true; }
-    const enter = sm(clamp(s.se / .14, 0, 1)), out = sm(clamp((s.sp - .42) / .3, 0, 1)), card = sm(clamp((s.sp - .56) / .24, 0, 1)), a = s.se;
-    const op = (enter * (1 - out)).toFixed(3), rs = Math.floor(a * 8);
-    if (rs !== s.rs) { if (+op > .3 && s.rs !== undefined) pulse(5); s.rs = rs; }
-    if (card > .7 && !s.shown) { s.shown = true; pulse([14, 30, 14]); } else if (card < .3) s.shown = false;
-    if (op !== s.vo) { s.vo = op; s.obj.style.opacity = op; s.obj.style.visibility = +op > .005 ? "visible" : "hidden"; }
-    if (+op > .005) {
-      s.obj.style.transform = "translate3d(0," + ((1 - enter) * 70 - out * 18).toFixed(1) + "px,0)";
-      const sc = (s.k * (.82 + .18 * enter) * (1 + .3 * out)).toFixed(3);
-      s.o3.style.transform = s.kind === "notebook"
-        ? "scale(" + sc + ") rotateX(" + (-14 + a * 12).toFixed(1) + "deg) rotateY(" + (-32 + a * 900).toFixed(1) + "deg) rotateZ(" + (Math.sin(a * 7) * 3).toFixed(1) + "deg)"
-        : "scale(" + sc + ") rotateX(-16deg) rotateY(" + (a * 720).toFixed(1) + "deg) rotateZ(" + (-14 + a * 28).toFixed(1) + "deg)";
-    }
-    const cv = card.toFixed(3);
-    if (cv !== s.vc) {
-      s.vc = cv; s.cw.style.opacity = cv;
-      s.cw.style.transform = "translate3d(0," + ((1 - card) * 46).toFixed(1) + "px,0) scale(" + (.93 + .07 * card).toFixed(3) + ")";
-      s.cw.style.visibility = card > .02 ? "visible" : "hidden"; s.cw.style.pointerEvents = card > .7 ? "auto" : "none";
-    }
+    const enter = sm(clamp(s.se / .14, 0, 1)), rs = Math.floor(s.se * 8);
+    if (rs !== s.rs) { if (enter > .3 && s.sp < .3 && s.rs !== undefined) pulse(5); s.rs = rs; }
+    (s.kind === "notebook" ? renderNotebook : renderDumbbell)(s, enter, s.sp, s.se);
   }
   let n = Math.ceil(clamp((y + vh * .88 - stTop) / (vh * .42), 0, 1) * words.length - .1);
   if (y >= docMax - 2) n = words.length;
@@ -612,7 +703,8 @@ function render() {
   if (need || Math.abs(tgt.x - cur.x) > .002 || Math.abs(tgt.y - cur.y) > .002) request();
 }
 addEventListener("scroll", request, { passive: true });
-addEventListener("resize", () => { measure(); request(); });
+let lw = innerWidth, lh = innerHeight;
+addEventListener("resize", () => { if (innerWidth === lw && Math.abs(innerHeight - lh) < 140) return; lw = innerWidth; lh = innerHeight; measure(); request(); });
 addEventListener("load", () => { measure(); request(); });
 if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { measure(); request(); });
 if (fine.matches && !reduce.matches) addEventListener("pointermove", e => {
