@@ -13,7 +13,8 @@
   var r = document.documentElement, t = "light", p = "ocean";
   try { t = localStorage.getItem("bs-theme") || t; p = localStorage.getItem("bs-palette") || p; } catch (e) {}
   var mode = t === "system" ? (matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark") : t;
-  r.dataset.theme = t; r.dataset.mode = mode; r.dataset.palette = p; r.classList.add("js");
+  r.dataset.theme = t; r.dataset.mode = mode; r.dataset.palette = p; r.classList.add("js", "loading");
+  setTimeout(function () { r.classList.remove("loading"); var sp = document.getElementById("splash"); if (sp) sp.classList.add("done"); }, 9000);
   var ua = navigator.userAgent; if (/iP(hone|ad|od)/.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1)) r.classList.add("ios");
 })();
 </script>
@@ -127,7 +128,7 @@ h1 .ln:first-child > span { background: linear-gradient(100deg, var(--text) 30%,
 .cue::after { content: ""; position: absolute; left: 0; top: 0; width: 1px; height: 22px; background: var(--accent); animation: drip 2s var(--ease) infinite; }
 
 /* Scroll-driven marquee */
-.mq { margin: 1rem 0 3.5rem; overflow: hidden; contain: layout paint; user-select: none; }
+.mq { margin: 1rem 0 3.5rem; padding: .6rem 0 1rem; overflow-x: clip; contain: layout; user-select: none; }
 .mq-row { display: flex; width: max-content; will-change: transform; animation: mq var(--mqd, 46s) linear infinite; }
 .mq-row.b { animation-direction: reverse; }
 .mq.paused .mq-row { animation-play-state: paused; }
@@ -174,15 +175,15 @@ h2 { margin: 0; font-weight: 300; font-size: clamp(2rem, 6vw, 3.4rem); letter-sp
 .hint { font-size: .82rem; color: var(--muted); max-width: 34ch; }
 
 /* Scroll scenes: a 3D object spins with scroll, then the app card appears */
-.scene { position: relative; overflow-x: clip; --cc: color-mix(in srgb, hsl(var(--ch) var(--cs) var(--al)) 38%, var(--accent)); }
+.scene { position: relative; --cc: color-mix(in srgb, hsl(var(--ch) var(--cs) var(--al)) 38%, var(--accent)); }
 .stick { display: grid; place-items: center; padding: 1rem 0; }
 .obj, .cw { grid-area: 1 / 1; }
-.cw { width: min(100%, 520px); display: flex; perspective: 1000px; }
+.cw { width: min(calc(100% - 26px), 520px); display: flex; perspective: 1000px; }
 .js:not(.static) .scene[data-scene] { height: 270vh; height: 270svh; }
 .js:not(.static) .scene[data-scene] .stick { position: sticky; top: 0; height: 100vh; height: 100svh; padding: 0; }
 .js:not(.static) .scene[data-scene] .cw { opacity: 0; visibility: hidden; pointer-events: none; will-change: transform, opacity; }
 .obj { z-index: 2; position: relative; width: 100%; height: 100%; display: grid; place-items: center; perspective: 1100px; pointer-events: none; }
-.obj::before { opacity: var(--gl, 1); content: ""; position: absolute; left: 50%; top: 50%; width: min(680px, 130vw); aspect-ratio: 1; translate: -50% -50%; background: radial-gradient(closest-side, color-mix(in srgb, var(--cc) 28%, transparent), transparent); }
+.obj::before { opacity: var(--gl, 1); content: ""; position: absolute; left: 50%; top: 50%; width: min(680px, 100%); aspect-ratio: 1; translate: -50% -50%; background: radial-gradient(closest-side, color-mix(in srgb, var(--cc) 28%, transparent), transparent); }
 .o3 { position: relative; width: 0; height: 0; transform-style: preserve-3d; will-change: transform; }
 .cap { opacity: var(--gl, 1); position: absolute; left: 0; right: 0; bottom: 11%; text-align: center; font-size: .78rem; letter-spacing: .32em; text-transform: uppercase; color: var(--muted); }
 .static .obj { display: none; }
@@ -203,7 +204,7 @@ h2 { margin: 0; font-weight: 300; font-size: clamp(2rem, 6vw, 3.4rem); letter-sp
 .card > .fx.shards { inset: auto; left: 50%; top: 26%; width: 0; height: 0; }
 .shard { position: absolute; left: 0; top: 0; width: 9px; height: 5px; margin: -2.5px 0 0 -4.5px; border-radius: 1px; background: color-mix(in srgb, var(--text) 60%, transparent); opacity: 0; }
 .ring2 { position: absolute; left: 0; top: 0; width: 140px; height: 140px; margin: -70px 0 0 -70px; border: 2px solid color-mix(in srgb, var(--text) 40%, transparent); border-radius: 50%; opacity: 0; }
-.card > .fx.holes { inset: 0 auto 0 12px; width: 14px; background: radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--text) 24%, transparent) 4.5px, transparent 5.5px) 0 10px / 14px 36px repeat-y; }
+.card > .fx.holes { inset: 0 auto 0 0; width: 40px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 36'%3E%3Ccircle cx='25' cy='18' r='6.5' fill='%23000' fill-opacity='.42'/%3E%3Cpath d='M2 18H31' stroke='%238a919d' stroke-width='5.5' stroke-linecap='round'/%3E%3Cpath d='M3 16.4H29' stroke='%23fff' stroke-opacity='.65' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E") 0 10px / 40px 36px repeat-y; }
 .static .fx.cracks, .static .fx.shards { display: none; }
 .nb .fr svg { position: absolute; left: 50%; top: 27%; width: 56px; height: 56px; translate: -50% -50%; color: color-mix(in srgb, var(--cc) 65%, #fff); opacity: .92; }
 .nb .fr i { position: absolute; left: 36px; right: 36px; height: 2px; background: rgba(255,255,255,.2); border-radius: 2px; }
@@ -290,7 +291,7 @@ footer .brand { font-size: .92rem; color: var(--text); }
 .sticker .sstar { fill: var(--accent); stroke: var(--ink); stroke-width: 2.2; stroke-linejoin: round; } .sticker .sstar2 { fill: #fff; stroke: var(--ink); stroke-width: 1.6; stroke-linejoin: round; } .sticker .sdot { fill: var(--ink); }
 .clickme { position: absolute; left: clamp(94px, 17%, 190px); top: 3.4rem; margin: 0; display: flex; align-items: flex-start; gap: .25rem; font-family: var(--hand); font-size: clamp(.95rem, 2.4vw, 1.25rem); color: var(--text); transform: rotate(-6deg); pointer-events: none; }
 .clickme svg { width: 40px; height: 26px; fill: none; stroke: var(--pop); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; margin-top: -.6rem; }
-.mq-row .ph { display: inline-flex; align-items: center; gap: .32em; padding-right: .8em; font-family: var(--hand); font-weight: 700; font-size: clamp(2.8rem, 9vw, 6rem); line-height: 1.25; letter-spacing: 0; -webkit-text-stroke: 0; color: var(--text); white-space: nowrap; }
+.mq-row .ph { display: inline-flex; align-items: center; gap: .32em; padding-right: .8em; font-family: var(--hand); font-weight: 700; font-size: clamp(2.8rem, 9vw, 6rem); line-height: 1.6; letter-spacing: 0; -webkit-text-stroke: 0; color: var(--text); white-space: nowrap; }
 .mq-row .wd { display: inline-block; font-weight: inherit; animation: bobw 2.6s ease-in-out infinite alternate; animation-delay: calc(var(--i) * -.37s); }
 .mq-row .wd:nth-child(3n+1) { color: var(--pop); } .mq-row .wd:nth-child(3n+2) { color: var(--accent); }
 .mq-row .sep { width: .62em; height: .62em; flex: none; margin-left: .3em; fill: var(--pop); stroke: var(--ink); stroke-width: 2.4; stroke-linejoin: round; animation: sepspin 9s linear infinite; }
@@ -320,6 +321,29 @@ footer { padding: 3rem 0 4.5rem; }
 @media (max-width: 700px) { .statement { margin-top: 1rem; } }
 @media (max-width: 600px) { .zd { display: none; } }
 @media (max-height: 760px) { .facts { display: none; } .hero { padding: 4.4rem 0 1.5rem; } .artwrap { padding-top: 5.6rem; } }
+/* paper page for the notebook card */
+[data-mode="light"] { --paper: #fffdf5; --rule: rgba(60, 100, 170, .2); }
+[data-mode="dark"] { --paper: #25231f; --rule: rgba(255, 255, 255, .08); }
+[data-mode="amoled"] { --paper: #181715; --rule: rgba(255, 255, 255, .07); }
+.scene[data-scene="notebook"] .card { border-radius: 6px 24px 24px 6px; background: linear-gradient(90deg, transparent 58px, color-mix(in srgb, var(--pop) 65%, transparent) 58px 60px, transparent 60px), repeating-linear-gradient(180deg, transparent 0 31px, var(--rule) 31px 32px), var(--paper); }
+.scene[data-scene="notebook"] .cw::before { background: var(--paper); border-radius: 6px 24px 24px 6px; transform: translate(7px, 9px) rotate(1.6deg); }
+.scene[data-scene="notebook"] .cw::after { content: ""; position: absolute; inset: 0; z-index: -2; background: var(--paper); border: 2px solid var(--ink); border-radius: 6px 24px 24px 6px; transform: translate(13px, 17px) rotate(3.2deg); }
+.card > .fx.curl { inset: auto 0 0 auto; width: 56px; height: 56px; background: linear-gradient(315deg, var(--bg) 0 46%, var(--ink) 46% 49%, color-mix(in srgb, var(--paper) 74%, #000) 49% 100%); box-shadow: -4px -4px 10px rgba(0, 0, 0, .12); border-top-left-radius: 10px; }
+/* startup splash with wavy progress bar */
+.loading { overflow: hidden; }
+.loading body > :not(.splash):not(.upd), .loading body > :not(.splash):not(.upd) * { animation-play-state: paused !important; }
+.splash { position: fixed; inset: 0; z-index: 100; will-change: transform; transform: translateZ(0); contain: strict; display: grid; place-items: center; background: color-mix(in srgb, var(--bg) 99%, transparent); transition: opacity .5s var(--ease), visibility .5s; --p: .06; }
+.splash.done { opacity: 0; visibility: hidden; pointer-events: none; }
+.spl-in { display: grid; justify-items: center; gap: 1.2rem; width: min(320px, 76vw); }
+.spl-brand { display: inline-flex; align-items: center; gap: .6rem; font-size: 1.5rem; letter-spacing: -.01em; }
+.spl-brand svg { width: 34px; height: 34px; animation: wob 3s ease-in-out infinite alternate; } .spl-brand b { font-weight: 600; } .spl-brand .sl { color: var(--muted); font-weight: 300; margin-inline: .1em; } .spl-brand .sp2 { font-weight: 300; }
+.sbar { position: relative; width: 100%; height: 30px; border: 2px solid var(--ink); border-radius: 99px; overflow: hidden; background: color-mix(in srgb, var(--text) 7%, transparent); box-shadow: 3px 3px 0 var(--hard); }
+.sfill { position: absolute; left: 0; top: 0; bottom: 0; width: calc(var(--p) * 100%); overflow: hidden; background: var(--accent); transition: width .35s var(--ease); }
+.swave { position: absolute; left: 0; top: 0; bottom: 0; width: calc(100% + 80px); background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 30'%3E%3Cpath d='M0 14Q20 4 40 14T80 14V30H0Z' fill='%23fff' fill-opacity='.38'/%3E%3Cpath d='M0 14Q20 4 40 14T80 14' fill='none' stroke='%23fff' stroke-opacity='.85' stroke-width='2'/%3E%3C/svg%3E") 0 0 / 80px 30px repeat-x; animation: swv .9s linear infinite; will-change: transform; }
+@keyframes swv { to { transform: translateX(-80px); } }
+.smsg { margin: 0; font-family: var(--hand); font-size: 1.25rem; color: var(--text); }
+body > .upd { z-index: 110; border: 2px solid var(--ink); box-shadow: 5px 5px 0 var(--hard); background: var(--panel); }
+.upd .ibtn { white-space: nowrap; }
 /* iOS Safari: fewer big layers (memory) and no continuous ambient drift */
 .ios .atmo i::before { animation: none; }
 .ios .atmo i:nth-child(3), .ios .bgc:nth-child(3) { display: none; }
@@ -348,6 +372,12 @@ footer { padding: 3rem 0 4.5rem; }
 </style>
 </head>
 <body>
+<noscript><style>.splash { display: none; } .loading { overflow: auto; }</style></noscript>
+<div class="splash" id="splash" role="status" aria-live="polite"><div class="spl-in">
+  <div class="spl-brand"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3.5" y="3.5" width="11" height="11" rx="3.5" stroke="currentColor" stroke-width="1.6"/><rect x="9.5" y="9.5" width="11" height="11" rx="3.5" fill="var(--accent)" fill-opacity=".4" stroke="var(--accent)" stroke-width="1.6"/></svg><span><b>baffling</b><span class="sl">/</span><span class="sp2">space</span></span></div>
+  <div class="sbar" aria-hidden="true"><div class="sfill"><div class="swave"></div></div></div>
+  <p class="smsg" id="splMsg">Looking for updates…</p>
+</div></div>
 <div class="bar" aria-hidden="true"></div>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
   <symbol id="d-star" viewBox="0 0 40 40"><path d="M20 3 C21 13 27 19 37 20 C27 21 21 27 20 37 C19 27 13 21 3 20 C13 19 19 13 20 3Z"/></symbol>
@@ -468,7 +498,7 @@ function renderApps() {
       ? '<a class="open" href="' + esc(a.url.trim()) + '" target="_blank" rel="noopener noreferrer" aria-label="Open ' + esc(a.name) + ' in a new tab"><span>Open app</span>' + ARROW + '</a>'
       : '<button class="open" type="button" aria-disabled="true" aria-describedby="hint' + i + '"><span>Open app</span>' + ARROW + '</button><span class="hint" id="hint' + i + '">Link not set yet. Add this app\'s URL in the config at the top of the script.</span>';
     return '<section class="scene' + (a.scene ? '' : ' plain') + '"' + (a.scene ? ' data-scene="' + a.scene + '"' : '') + ' style="--ch:' + a.hue + ';--cs:' + a.sat + '%"><div class="stick">' +
-      (a.scene ? '<div class="obj" aria-hidden="true"><div class="o3"></div><span class="cap">' + esc(a.name) + '<em class="hand">' + esc(a.hint || "") + '</em></span></div>' : '') + '<div class="cw"><article class="card"><span class="fx waves"></span>' + (a.doodle ? '<svg class="dd cdd" aria-hidden="true"><use href="#d-' + a.doodle + '"/></svg><svg class="dd cdd2" aria-hidden="true"><use href="#d-star"/></svg>' : '') + (a.scene === "notebook" ? '<span class="fx holes"></span>' : '') +
+      (a.scene ? '<div class="obj" aria-hidden="true"><div class="o3"></div><span class="cap">' + esc(a.name) + '<em class="hand">' + esc(a.hint || "") + '</em></span></div>' : '') + '<div class="cw"><article class="card">' + (a.scene === "notebook" ? '' : '<span class="fx waves"></span>') + (a.doodle ? '<svg class="dd cdd" aria-hidden="true"><use href="#d-' + a.doodle + '"/></svg><svg class="dd cdd2" aria-hidden="true"><use href="#d-star"/></svg>' : '') + (a.scene === "notebook" ? '<span class="fx holes"></span><span class="fx curl"></span>' : '') +
       '<div class="card-top"><div class="icon" aria-hidden="true">' + ICONS[a.icon] + '</div><span class="status">' + (ok ? CHECK + 'Live' : RING + 'Link not set') + '</span></div>' +
       '<h3>' + esc(a.name) + '</h3><p>' + esc(a.description) + '</p>' +
       '<ul class="tags" aria-label="Categories">' + a.tags.map(t => '<li>' + esc(t) + '</li>').join("") + '</ul>' +
@@ -546,10 +576,11 @@ const tick = (() => {
   const i = document.createElement("input"); i.type = "checkbox"; i.setAttribute("switch", ""); i.tabIndex = -1;
   l.appendChild(i); document.body.appendChild(l); return l;
 })();
+let quiet = true;
 function haptic(pattern) {
-  if (reduce.matches) return;
+  if (reduce.matches || quiet) return;
   try {
-    if (navigator.vibrate) { navigator.vibrate(pattern); return; }
+    if (navigator.vibrate) { if (navigator.userActivation && !navigator.userActivation.hasBeenActive) return; navigator.vibrate(pattern); return; }
     tick.click(); if (Array.isArray(pattern) && pattern.length > 2) setTimeout(() => tick.click(), 90);
   } catch (e) {}
 }
@@ -876,42 +907,78 @@ document.getElementById("sticker").addEventListener("click", () => {
 measure(); request();
 document.getElementById("year").textContent = new Date().getFullYear();
 
-/* ---------- Update check ----------
-   Compares the live index.html with the copy that was fetched when this page opened.
-   When they differ, a pop-up asks to update (OK = reload the newest version). */
+/* ---------- Boot ----------
+   1) look for an update (before loading anything heavy)  2) if one exists: "Update ready" + Install
+   3) warm everything up behind the splash so the first scroll is smooth  4) reveal. */
 (function () {
-  if (!/^https?:$/.test(location.protocol)) return;
-  if (/[?&]u=/.test(location.search)) history.replaceState(null, "", location.pathname + location.hash);
-  const base = location.href.split("#")[0].split("?")[0];
+  const splash = document.getElementById("splash"), msg = document.getElementById("splMsg"), t0 = performance.now();
+  const sleep = ms => new Promise(r => setTimeout(r, ms)), raf = () => new Promise(r => requestAnimationFrame(r));
+  const setP = (p, t) => { splash.style.setProperty("--p", p.toFixed(3)); if (t) msg.textContent = t; };
+  const http = /^https?:$/.test(location.protocol), base = location.href.split("#")[0].split("?")[0];
   const hash = t => { let h = 5381; for (let i = 0; i < t.length; i++) h = ((h << 5) + h + t.charCodeAt(i)) | 0; return h + ":" + t.length; };
+  const within = (ms, p) => Promise.race([p, new Promise((_, j) => setTimeout(j, ms))]);
+  const get = async (url, init) => { const r = await fetch(url, init); if (!r.ok) throw 0; return hash(await r.text()); };
+  const fresh = () => get(base + "?_=" + Date.now(), { cache: "no-store" });
+  const cached = () => get(base, { cache: "force-cache" });
   let baseline = null, shown = false, busy = false, snooze = 0;
+  if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+
+  function showUpdate(boot) {
+    return new Promise(done => {
+      shown = true;
+      const d = document.createElement("div");
+      d.className = "upd"; d.setAttribute("role", "alertdialog"); d.setAttribute("aria-labelledby", "updT"); d.setAttribute("aria-describedby", "updD");
+      d.innerHTML = '<b id="updT">Update ready</b><span id="updD">A fresh version of baffling space is ready to install.</span><div class="acts"><button type="button" class="open" id="updOk"><span>Install</span></button><button type="button" class="ibtn" id="updLater">' + (boot ? "Not now" : "Later") + '</button></div>';
+      document.body.appendChild(d);
+      const ok = d.querySelector("#updOk"), esc = e => { if (e.key === "Escape") later(); };
+      const later = () => { d.remove(); shown = false; snooze = Date.now() + 10 * 60 * 1000; document.removeEventListener("keydown", esc); done(); };
+      ok.addEventListener("click", () => {
+        ok.disabled = true; ok.firstElementChild.textContent = "Installing…"; setP(1, "Installing update…");
+        const u = new URL(location.href); u.searchParams.set("u", Date.now()); setTimeout(() => location.replace(u.toString()), 400);
+      });
+      d.querySelector("#updLater").addEventListener("click", later);
+      document.addEventListener("keydown", esc);
+      quiet = false; haptic([12, 40, 12]); if (boot) quiet = true;
+    });
+  }
+  async function startupCheck() {
+    if (!http) return { upd: false };
+    if (/[?&]u=/.test(location.search)) {                      // we just installed an update
+      history.replaceState(null, "", location.pathname + location.hash); fetch(base, { cache: "reload" }).catch(() => {});
+      try { baseline = await within(2500, fresh()); } catch (e) {}
+      return { upd: false };
+    }
+    try { const [f, c] = await within(2500, Promise.all([fresh(), cached()])); baseline = f; return { upd: f !== c, stale: c }; } catch (e) { return { upd: false }; }
+  }
+  async function warm() {
+    if (document.fonts && document.fonts.ready) await Promise.race([document.fonts.ready, sleep(1200)]);
+    measure();
+    const H = Math.max(0, document.documentElement.scrollHeight - innerHeight), step = innerHeight * .7, n = Math.min(40, Math.ceil(H / step));
+    for (let i = 0; i <= n; i++) { scrollTo(0, Math.min(H, i * step)); request(); await raf(); await raf(); setP(.6 + .36 * (i / Math.max(1, n))); }
+    scrollTo(0, 0); await raf();
+    hpS = 0; lastHp = -1; lastKey = ""; lastNf = ""; lit = -1; lastBg = -1;
+    scenes.forEach(sc => { sc.sp = 0; sc.se = 0; sc.done = undefined; sc.vo = sc.vc = sc.vt = sc.vct = sc.vcv = undefined; sc.hit = sc.shown = sc.opened = false; });
+    request(); await raf(); await raf();
+  }
   async function check() {
-    if (shown || busy || document.hidden) return;
+    if (shown || busy || document.hidden || !http || !baseline) return;
     busy = true;
+    try { const h = await fresh(); if (h !== baseline && Date.now() > snooze) showUpdate(false); } catch (e) {} finally { busy = false; }
+  }
+  (async function boot() {
     try {
-      const r = await fetch(base + "?_=" + Date.now(), { cache: "no-store" });
-      if (!r.ok) throw 0;
-      const h = hash(await r.text());
-      if (baseline === null) baseline = h; else if (h !== baseline && Date.now() > snooze) showUpdate();
-    } catch (e) {} finally { busy = false; }
-  }
-  function showUpdate() {
-    shown = true;
-    const d = document.createElement("div");
-    d.className = "upd"; d.setAttribute("role", "alertdialog"); d.setAttribute("aria-labelledby", "updT"); d.setAttribute("aria-describedby", "updD");
-    d.innerHTML = '<b id="updT">New update available</b><span id="updD">Click OK to update to the latest version.</span><div class="acts"><button type="button" class="open" id="updOk"><span>OK</span></button><button type="button" class="ibtn" id="updLater">Later</button></div>';
-    document.body.appendChild(d);
-    const later = () => { d.remove(); shown = false; snooze = Date.now() + 10 * 60 * 1000; document.removeEventListener("keydown", esc); };
-    const esc = e => { if (e.key === "Escape") later(); };
-    document.getElementById("updOk").addEventListener("click", () => { const u = new URL(location.href); u.searchParams.set("u", Date.now()); location.replace(u.toString()); });
-    document.getElementById("updLater").addEventListener("click", later);
-    document.addEventListener("keydown", esc);
-    haptic([12, 40, 12]);
-  }
-  setTimeout(check, 2500);
-  setInterval(check, 5 * 60 * 1000);
-  document.addEventListener("visibilitychange", check);
-  addEventListener("online", check);
+      setP(.1, "Looking for updates…");
+      const r = await startupCheck();
+      if (r.upd) { setP(.5, "Update found"); baseline = r.stale; await showUpdate(true); }
+      setP(.6, "Getting things ready…");
+      await warm();
+      setP(1, "Ready!");
+      await sleep(Math.max(180, 800 - (performance.now() - t0)));
+    } catch (e) {}
+    quiet = false; root.classList.remove("loading"); splash.classList.add("done"); setTimeout(() => splash.remove(), 700);
+    request();
+    setInterval(check, 5 * 60 * 1000); document.addEventListener("visibilitychange", check); addEventListener("online", check);
+  })();
 })();
 </script>
 </body>
