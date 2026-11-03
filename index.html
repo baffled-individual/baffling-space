@@ -95,6 +95,7 @@ a { color: inherit; }
 /* Hero */
 .hero { will-change: opacity; position: relative; min-height: 100vh; min-height: 100svh; display: grid; place-items: center; text-align: center; padding: 5rem 0; }
 .js:not(.static) .hero-pin { height: 190vh; height: 190svh; }
+.js:not(.static) .hero-pin { margin-top: -72px; }
 .js:not(.static) .hero { position: sticky; top: 0; }
 /* Hero: two interlocked links on chains; scroll pulls the chains taut, the link snaps open, everything flies apart */
 .hero-art .stage { position: absolute; left: 50%; top: 0; width: 1000px; height: 240px; margin-left: -500px; transform-origin: 50% 0; transform: scale(var(--s, .78)); }
@@ -312,20 +313,27 @@ footer .brand { font-size: .92rem; color: var(--text); }
 .clickme { top: .2rem; }
 .lede, .apps-head h2, .statement h2, .by, footer, .mq-row .ph { text-shadow: 0 0 .45em color-mix(in srgb, var(--bg) 88%, transparent), 0 0 .14em color-mix(in srgb, var(--bg) 70%, transparent); }
 footer { padding: 3rem 0 4.5rem; }
-@media (max-width: 1000px) {
-  .artwrap { padding-top: 6.4rem; }
+@media (max-width: 1180px) {
+  .artwrap { padding-top: calc(clamp(86px, 13vw, 120px) + .9rem); }
   .sticker { top: 0; left: 3%; }
-  .clickme { left: calc(3% + 98px); top: 1.5rem; }
+  .clickme { left: calc(3% + clamp(86px, 13vw, 120px) + 10px); top: 1.5rem; }
   .note { top: .4rem; right: 2%; }
 }
 @media (max-width: 700px) { .statement { margin-top: 1rem; } }
 @media (max-width: 600px) { .zd { display: none; } }
-@media (max-height: 760px) { .facts { display: none; } .hero { padding: 4.4rem 0 1.5rem; } .artwrap { padding-top: 5.6rem; } }
+@media (min-width: 1181px) {
+  .clickme { left: 14px; top: 8.4rem; flex-direction: column; align-items: flex-start; gap: .1rem; }
+  .clickme svg { rotate: 52deg; margin: 0 0 0 .6rem; }
+}
+@media (max-width: 380px) { .hl .sq { display: none; } }
+@media (max-height: 760px) { .facts { display: none; } .hero { padding: 4.4rem 0 1.5rem; } }
+@media (max-height: 880px) and (max-width: 1180px) { .facts { display: none; } .hero { padding: 4.4rem 0 1.5rem; } }
+h1 { font-size: clamp(2.6rem, min(11vw, 13vh), 7.2rem); }
 /* paper page for the notebook card */
 [data-mode="light"] { --paper: #fffdf5; --rule: rgba(60, 100, 170, .2); }
 [data-mode="dark"] { --paper: #25231f; --rule: rgba(255, 255, 255, .08); }
 [data-mode="amoled"] { --paper: #181715; --rule: rgba(255, 255, 255, .07); }
-.scene[data-scene="notebook"] .card { border-radius: 6px 24px 24px 6px; background: linear-gradient(90deg, transparent 58px, color-mix(in srgb, var(--pop) 65%, transparent) 58px 60px, transparent 60px), repeating-linear-gradient(180deg, transparent 0 31px, var(--rule) 31px 32px), var(--paper); }
+.scene[data-scene="notebook"] .card { --ml: 54px; padding-left: calc(var(--ml) + 1.1rem); border-radius: 6px 24px 24px 6px; background: linear-gradient(90deg, transparent var(--ml), color-mix(in srgb, var(--pop) 65%, transparent) var(--ml) calc(var(--ml) + 2px), transparent calc(var(--ml) + 2px)), repeating-linear-gradient(180deg, transparent 0 31px, var(--rule) 31px 32px), var(--paper); }
 .scene[data-scene="notebook"] .cw::before { background: var(--paper); border-radius: 6px 24px 24px 6px; transform: translate(7px, 9px) rotate(1.6deg); }
 .scene[data-scene="notebook"] .cw::after { content: ""; position: absolute; inset: 0; z-index: -2; background: var(--paper); border: 2px solid var(--ink); border-radius: 6px 24px 24px 6px; transform: translate(13px, 17px) rotate(3.2deg); }
 .card > .fx.curl { inset: auto 0 0 auto; width: 56px; height: 56px; background: linear-gradient(315deg, var(--bg) 0 46%, var(--ink) 46% 49%, color-mix(in srgb, var(--paper) 74%, #000) 49% 100%); box-shadow: -4px -4px 10px rgba(0, 0, 0, .12); border-top-left-radius: 10px; }
@@ -344,6 +352,17 @@ footer { padding: 3rem 0 4.5rem; }
 .smsg { margin: 0; font-family: var(--hand); font-size: 1.25rem; color: var(--text); }
 body > .upd { z-index: 110; border: 2px solid var(--ink); box-shadow: 5px 5px 0 var(--hard); background: var(--panel); }
 .upd .ibtn { white-space: nowrap; }
+.refnote { display: inline-flex; align-items: center; gap: .55rem; margin-bottom: 1.2rem; padding: .3rem .5rem; border: 0; background: none; cursor: pointer; font-family: var(--hand); font-size: 1.2rem; line-height: 1.1; color: var(--text); text-align: left; transform: rotate(-3deg); -webkit-tap-highlight-color: transparent; }
+.refnote svg { width: 30px; height: 40px; fill: none; stroke: var(--pop); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; flex: none; transition: translate .25s var(--ease); } .refnote:hover svg { translate: 0 -4px; }
+/* hero notes: "refresh to check for updates" sits next to "go ahead, scroll." */
+.notes { position: absolute; right: 1%; top: -.4rem; display: flex; align-items: flex-start; gap: 1.1rem; pointer-events: none; }
+.notes .note { position: static; transform: rotate(5deg); }
+.notes .note.up { align-items: center; text-align: center; transform: rotate(-4deg); }
+.notes .note.up svg { width: 26px; height: 34px; margin: 0 0 .1rem; }
+@media (max-width: 1180px) { .notes { top: .4rem; right: 2%; } }
+@media (max-width: 600px), (min-width: 1181px) { .notes { flex-direction: column; align-items: flex-end; gap: .8rem; } }
+@media (max-width: 600px) { .artwrap { padding-top: max(calc(clamp(86px, 13vw, 120px) + .9rem), 10.6rem); } .notes .note { font-size: .95rem; } }
+@media (max-width: 360px) { .sticker { width: 76px; } .clickme { left: calc(3% + 86px); font-size: .88rem; } .clickme svg { width: 28px; } .notes .note { font-size: .82rem; } .notes .note svg { width: 38px; height: 24px; } .notes .note.up svg { width: 19px; height: 26px; } .artwrap { padding-top: 8.4rem; } }
 /* iOS Safari: fewer big layers (memory) and no continuous ambient drift */
 .ios .atmo i::before { animation: none; }
 .ios .atmo i:nth-child(3), .ios .bgc:nth-child(3) { display: none; }
@@ -427,10 +446,10 @@ body > .upd { z-index: 110; border: 2px solid var(--ink); box-shadow: 5px 5px 0 
       </div></div>
       <button class="sticker" id="sticker" type="button" aria-label="Shuffle colors"><svg viewBox="-60 -60 120 120" aria-hidden="true"><path class="sw" d="M50.0 0.0L52.0 2.0L53.1 4.2L52.9 6.3L51.4 8.1L49.0 9.8L46.7 11.2L45.0 12.7L44.5 14.5L45.0 16.6L46.2 19.1L47.2 21.8L47.4 24.2L46.4 26.0L44.3 27.2L41.6 27.8L38.8 28.2L36.7 29.0L35.6 30.4L35.2 32.6L35.4 35.4L35.3 38.2L34.6 40.5L33.0 41.8L30.6 42.1L27.8 41.6L25.1 40.9L22.9 40.8L21.2 41.7L20.1 43.6L19.1 46.2L18.0 48.8L16.5 50.6L14.4 51.2L12.1 50.6L9.8 49.0L7.5 47.4L5.5 46.4L3.7 46.6L1.9 48.0L0.0 50.0L-2.0 52.0L-4.2 53.1L-6.3 52.9L-8.1 51.4L-9.8 49.0L-11.2 46.7L-12.7 45.0L-14.5 44.5L-16.6 45.0L-19.1 46.2L-21.8 47.2L-24.2 47.4L-26.0 46.4L-27.2 44.3L-27.8 41.6L-28.2 38.8L-29.0 36.7L-30.4 35.6L-32.6 35.2L-35.4 35.4L-38.2 35.3L-40.5 34.6L-41.8 33.0L-42.1 30.6L-41.6 27.8L-40.9 25.1L-40.8 22.9L-41.7 21.2L-43.6 20.1L-46.2 19.1L-48.8 18.0L-50.6 16.5L-51.2 14.4L-50.6 12.1L-49.0 9.8L-47.4 7.5L-46.4 5.5L-46.6 3.7L-48.0 1.9L-50.0 0.0L-52.0 -2.0L-53.1 -4.2L-52.9 -6.3L-51.4 -8.1L-49.0 -9.8L-46.7 -11.2L-45.0 -12.7L-44.5 -14.5L-45.0 -16.6L-46.2 -19.1L-47.2 -21.8L-47.4 -24.2L-46.4 -26.0L-44.3 -27.2L-41.6 -27.8L-38.8 -28.2L-36.7 -29.0L-35.6 -30.4L-35.2 -32.6L-35.4 -35.4L-35.3 -38.2L-34.6 -40.5L-33.0 -41.8L-30.6 -42.1L-27.8 -41.6L-25.1 -40.9L-22.9 -40.8L-21.2 -41.7L-20.1 -43.6L-19.1 -46.2L-18.0 -48.8L-16.5 -50.6L-14.4 -51.2L-12.1 -50.6L-9.8 -49.0L-7.5 -47.4L-5.5 -46.4L-3.7 -46.6L-1.9 -48.0L-0.0 -50.0L2.0 -52.0L4.2 -53.1L6.3 -52.9L8.1 -51.4L9.8 -49.0L11.2 -46.7L12.7 -45.0L14.5 -44.5L16.6 -45.0L19.1 -46.2L21.8 -47.2L24.2 -47.4L26.0 -46.4L27.2 -44.3L27.8 -41.6L28.2 -38.8L29.0 -36.7L30.4 -35.6L32.6 -35.2L35.4 -35.4L38.2 -35.3L40.5 -34.6L41.8 -33.0L42.1 -30.6L41.6 -27.8L40.9 -25.1L40.8 -22.9L41.7 -21.2L43.6 -20.1L46.2 -19.1L48.8 -18.0L50.6 -16.5L51.2 -14.4L50.6 -12.1L49.0 -9.8L47.4 -7.5L46.4 -5.5L46.6 -3.7L48.0 -1.9L50.0 -0.0Z"/><circle class="sring" r="42"/><path class="sstar" d="M0.0 -35.0 L6.5 -15.7 L24.7 -24.7 L15.7 -6.5 L35.0 0.0 L15.7 6.5 L24.7 24.7 L6.5 15.7 L0.0 35.0 L-6.5 15.7 L-24.7 24.7 L-15.7 6.5 L-35.0 0.0 L-15.7 -6.5 L-24.7 -24.7 L-6.5 -15.7Z"/><path class="sstar2" d="M6.5 -15.7 L6.4 -6.4 L15.7 -6.5 L9.0 0.0 L15.7 6.5 L6.4 6.4 L6.5 15.7 L0.0 9.0 L-6.5 15.7 L-6.4 6.4 L-15.7 6.5 L-9.0 0.0 L-15.7 -6.5 L-6.4 -6.4 L-6.5 -15.7 L-0.0 -9.0Z"/><circle class="sdot" r="3.2"/></svg></button>
       <p class="clickme" aria-hidden="true"><svg viewBox="0 0 50 30"><path d="M46 22 C30 25 14 19 5 8 M5 8 L7 20 M5 8 L17 10"/></svg><span>click me</span></p>
-      <p class="note" id="heroNote" aria-hidden="true"><span>go ahead,<br>scroll.</span><svg viewBox="0 0 60 44" fill="none"><path d="M44 4 C 40 22, 26 32, 6 36 M6 36 L17 27 M6 36 L19 41"/></svg></p>
+      <div class="notes" id="heroNote" aria-hidden="true"><p class="note up"><svg viewBox="0 0 50 60" fill="none"><path d="M25 56 C12 44 14 24 25 6 M25 6 L14 18 M25 6 L36 16"/></svg><span>refresh to check<br>for updates</span></p><p class="note"><span>go ahead,<br>scroll.</span><svg viewBox="0 0 60 44" fill="none"><path d="M44 4 C 40 22, 26 32, 6 36 M6 36 L17 27 M6 36 L19 41"/></svg></p></div>
     </div>
       <span class="pill"><i aria-hidden="true"></i>Independent, ad-free, no tracking</span>
-      <div class="hl"><h1><span class="ln"><span>Your <em class="ser">tools.</em></span></span><span class="ln"><span>Your <span class="rel"><em class="ser">rules.</em><svg class="scr" viewBox="0 0 220 24" preserveAspectRatio="none" aria-hidden="true"><path d="M4 16 C 40 4, 70 22, 110 12 S 180 6, 216 14" pathLength="1"/></svg></span></span></span></h1><svg class="dd" style="--w:36px;left:2%;top:2%;--r:-10deg" aria-hidden="true"><use href="#d-star"/></svg><svg class="dd" style="--w:24px;right:3%;top:0;--c:var(--accent);--r:12deg" aria-hidden="true"><use href="#d-star"/></svg><svg class="dd" style="--w:100px;--ar:3.75;right:1%;bottom:-3%;--c:var(--accent);--r:-8deg" aria-hidden="true"><use href="#d-squig"/></svg><svg class="dd" style="--w:40px;left:2%;bottom:6%;--r:8deg" aria-hidden="true"><use href="#d-spiral"/></svg><svg class="dd" style="--w:30px;right:4%;top:46%;--c:var(--accent);--r:20deg" aria-hidden="true"><use href="#d-burst"/></svg></div>
+      <div class="hl"><h1><span class="ln"><span>Your <em class="ser">tools.</em></span></span><span class="ln"><span>Your <span class="rel"><em class="ser">rules.</em><svg class="scr" viewBox="0 0 220 24" preserveAspectRatio="none" aria-hidden="true"><path d="M4 16 C 40 4, 70 22, 110 12 S 180 6, 216 14" pathLength="1"/></svg></span></span></span></h1><svg class="dd" style="--w:36px;left:2%;top:2%;--r:-10deg" aria-hidden="true"><use href="#d-star"/></svg><svg class="dd" style="--w:24px;right:3%;top:0;--c:var(--accent);--r:12deg" aria-hidden="true"><use href="#d-star"/></svg><svg class="dd sq" style="--w:100px;--ar:3.75;right:1%;bottom:-3%;--c:var(--accent);--r:-8deg" aria-hidden="true"><use href="#d-squig"/></svg><svg class="dd" style="--w:40px;left:2%;bottom:6%;--r:8deg" aria-hidden="true"><use href="#d-spiral"/></svg><svg class="dd" style="--w:30px;right:4%;top:46%;--c:var(--accent);--r:20deg" aria-hidden="true"><use href="#d-burst"/></svg></div>
       <p class="lede">Thoughtful tools, no unnecessary noise.</p>
       <ul class="facts">
         <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>No accounts</li>
@@ -457,6 +476,7 @@ body > .upd { z-index: 110; border: 2px solid var(--ink); box-shadow: 5px 5px 0 
 
 <footer>
   <div class="wrap">
+    <button class="refnote" id="refNote" type="button" aria-label="Back to top. Refresh the page to check for updates"><svg viewBox="0 0 50 60" aria-hidden="true"><path d="M25 56 C12 44 14 24 25 6 M25 6 L14 18 M25 6 L36 16"/></svg><span>refresh to check<br>for updates</span></button>
     <a class="brand" href="./" aria-label="baffling space, home">
       <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3.5" y="3.5" width="11" height="11" rx="3.5" stroke="currentColor" stroke-width="1.6"/><rect x="9.5" y="9.5" width="11" height="11" rx="3.5" fill="var(--accent)" fill-opacity=".4" stroke="var(--accent)" stroke-width="1.6"/></svg>
       <span><b>baffling</b><span class="slash">/</span><span class="sp">space</span></span>
@@ -899,6 +919,7 @@ function bindCards() {
 }
 
 buildMenus(); applyAppearance(); renderApps(); bindCards(); syncStatic(); setupScenes(); setupMarquee(); buildHero();
+document.getElementById("refNote").addEventListener("click", () => { scrollTo({ top: 0, behavior: reduce.matches ? "auto" : "smooth" }); haptic(10); });
 document.getElementById("sticker").addEventListener("click", () => {
   const stk = document.getElementById("sticker"), r = stk.getBoundingClientRect(); burst(r.left + r.width / 2, r.top + r.height / 2);
   const i = PALETTES.findIndex(q => q[0] === palette); palette = PALETTES[(i + 1 + Math.floor(Math.random() * (PALETTES.length - 1))) % PALETTES.length][0];
